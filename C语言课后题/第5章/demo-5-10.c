@@ -1,14 +1,20 @@
 #include<stdio.h>
 #include<math.h>
-int f(int x, int n)
+double f(double x, int n)
 {
-    int i, S = x, flag = 1;
-    for (i = 1; i <= n; i++)
-    {
-        return S*f()
-    }
+    double result = 0;
+    if (n == 1)
+        result = x;
+    else
+        result += pow(x, n) * pow(-1, n - 1) + f(x, n - 1);
+    return result;
+
 }
 int main()
 {
-
+    int n;
+    double x;
+    scanf("%lf%d", &x, &n);
+    printf("%lf", f(x, n));
+    return 0;
 }
