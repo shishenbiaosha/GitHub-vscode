@@ -3,7 +3,7 @@
 int main()
 {
     char word[N] = {0};
-    char i;
+    int i;
     gets(word);
     for (i = 0; i < N; i++)
     {
