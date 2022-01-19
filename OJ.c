@@ -2073,3 +2073,602 @@ double CancelFee(double price)
 
 //1103: 平均学分绩点（函数专题）
 //平均学分绩点（Grade Point Average，即GPA）是以学分与绩点作为衡量学生学习的量与质的计算单位，以取得一定的学分和平均学分绩点作为毕业和获得学位的标准，实施多样的教育规格和较灵活的教学管理制度。大学里每一门课程都有一定的学分。只有通过这门课的考试，才能获得相应的学分。课程绩点的计算方法通常是：（百分制成绩 - 50) / 10 取整。成绩100，对应绩点为5，成绩90~99对应绩点为4，......，成绩60~69对应绩点为1，成绩小于60，对应绩点为0。平均学分绩点的计算方法是：是将学生修过的每一门课程的绩点乘以该门课程的学分，累加后再除以总学分。 平均学分绩点可以作为学生学习能力与质量的综合评价指标之一。请编程计算一个学生的平均学分绩点。
+#include<stdio.h>
+int jd(int n)
+{
+    if (n == 100)
+        return 5.0;
+    else if (n >= 90 && n <= 99)
+        return 4.0;
+    else if (n >= 80 && n <= 89)
+        return 3.0;
+    else if (n >= 70 && n <= 79)
+        return 2.0;
+    else if (n >= 60 && n <= 69)
+        return 1.0;
+    else
+        return 0;
+}
+int main()
+{
+    int n;
+    int xf, cj;
+    double sum = 0, sjd = 0;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
+    {
+        scanf("%d%d", &xf, &cj);
+        sjd += jd(cj) * xf;
+        sum += xf;
+    }
+    printf("%.1lf", sjd / sum);
+    return 0;
+}
+
+//1104: 求因子和（函数专题）
+//输入正整数n（2<=n<=1000），计算并输出n的所有正因子(包括1，不包括自身)之和。要求程序定义一个FacSum ()函数和一个main()函数，FacSum ()函数计算并返回n的所有正因子之和，其余功能在main()函数中实现。 
+//int FacSum(int n) 
+//{ 
+////计算n的所有正因子(包括1，不包括自身)之和sum，本函数返回sum 
+//} 
+#include<stdio.h>
+int FacSum(int n)
+{
+    int sum = 1, i;
+    for (i = 2; i < n; i++)
+        if (n % i == 0)
+            sum += i;
+    return sum;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    printf("%d", FacSum(n));
+    return 0;
+}
+
+// 1105: 判断友好数对（函数专题）
+//输入两个正整数m和n，顺序输出m到n之间的所有友好数对。如果两个整数的所有正因子之和（包括1，不包括自身）等于对方，就称这对数是友好的。例如：1184和1210是友好数对，因为 1184的因子之和为1+2+4+8+16+32+37+74+148+296+592=1210 1210的因子之和为1+2+5+10+11+22+55+110+121+242+605=1184 要求程序定义一个facsum ()函数和一个main()函数，facsum ()函数计算并返回n的所有正因子之和，其余功能在main()函数中实现。 
+// int facsum (int n) 
+// { 
+// //计算n的所有正因子之和sum，本函数返回sum 
+// } 
+#include<stdio.h>
+int facsum(int n)
+{
+    int sum = 1, i;
+    for (i = 2; i < n; i++)
+        if (n % i == 0)
+            sum += i;
+    return sum;
+}
+int main()
+{
+    int n, m, j, x, f1 = 0, f2 = 0;
+    scanf("%d%d", &m, &n);
+    for (j = m; j <= n; j++)
+    {
+        x = facsum(j);
+        if (j == facsum(x) && j < x)
+        {
+            if (f2 == 0)
+                printf("%d %d", j, x);
+            else
+                printf("\n%d %d", j, x);
+            f1 = 1, f2 = 1;
+        }
+    }
+    if (f1 == 0)
+        printf("No answer\n");
+    return 0;
+}
+
+// 1106: 回文数（函数专题）
+//一个正整数，如果从左向 右读（称之为正序数）和从右向左读（称之为倒序数）是一样的，这样的数就叫回文数。输入两个整数m和n（m<n)，输出区间[m，n]之间的回文数。
+#include<stdio.h>
+int hw(int n)
+{
+    int result = 0;
+    while (n != 0)
+    {
+        result = result * 10 + n % 10;
+        n /= 10;
+    }
+    return result;
+}
+int main()
+{
+    int m, n, i;
+    scanf("%d%d", &m, &n);
+    for (i = m; i <= n; i++)
+    {
+        if (i == hw(i))
+            printf("%d ", i);
+    }
+    return 0;
+}
+
+//1107: 回文数猜想（函数专题）
+//一个正整数，如果从左向右读（称之为正序数）和从右向左读（称之为倒序数）是一样的，这样的数就叫回文数。任取一个正整数，如果不是回文数，将该数与他的倒序数相加，若其和不是回文数，则重复上述步骤，一直到获得回文数为止。例如：68变成154（68+86），再变成605（154+451），最后变成1111（605+506），而1111是回文数。于是有数学家提出一个猜想：不论开始是什么正整数，在经过有限次正序数和倒序数相加的步骤后，都会得到一个回文数。至今为止还不知道这个猜想是对还是错。现在请你编程序验证之。你已经会写求一个整数的逆序数的函数inverse()，那么如下循环可以模拟回文数猜想的验证过程：
+// while( m = inverse(n), m != n)
+// {
+// 输出n;
+// 把n更新为 m + n;
+// }
+#include<stdio.h>
+int inverse(int n)
+{
+    int result = 0;
+    while (n != 0)
+    {
+        result = result * 10 + n % 10;
+        n /= 10;
+    }
+    return result;
+}
+int main()
+{
+    int n, m;
+    scanf("%d", &n);
+    while (m = inverse(n), m != n)
+    {
+            printf("%d ", n);
+            n += m;
+    } 
+    if(n = inverse(n))
+        printf("%d ", n);
+    return 0;
+}
+
+//1108: 打印数字图形（函数专题）
+//从键盘输入一个整数n(1≤n≤9),打印出指定的数字图形。要求在程序中定义并调用函数PrintLine()来输出图形中的一行，该行中的最大数字是m，函数原型如下：
+// PrintLine(int m)；
+#include<stdio.h>
+void PrintBlank(int m)
+{
+    int i;
+    for (i = 1; i <= m; i++)
+        printf(" ");
+}
+void PrintNum(int m)
+{
+    int i;
+    for (i = 1; i < m; i++)
+        printf("%d", i);
+    for (i = m; i > 0; i--)
+        printf("%d", i);
+    printf("\n");
+}
+void PrintLine(int m)
+{
+    int i;
+    for (i = 1; i < m; i++)
+    {
+        PrintBlank(m - i);
+        PrintNum(i);
+    }
+    for (i = m; i > 0; i--)
+    {
+        PrintBlank(m - i);
+        PrintNum(i);
+    }
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    PrintLine(n);
+    return 0;
+}
+
+//1109: 数根（函数专题）
+// 输入一个正整数，输出该数的数根。数根可以通过把一个数的各个位上的数字加起来得到。如果得到的数是一位数，那么这个数就是数根。如果结果是两位数或者包括更多位的数字，那么再把这些数字加起来。如此进行下去，直到得到是一位数为止。比如，对于24来说，把2和4相加得到6，由于6是一位数，因此6是24的数根。再比如39，把3和9加起来得到12，由于12不是一位数，因此还得把1和2加起来，最后得到3，这是一个一位数，因此3是39的数根。 要求使用函数，定义函数digitSum(int n)求n的各位数字和，其余功能在main()函数中实现。 
+// int digitSum(int n) 
+// { 
+// //函数返回n的各位数字之和 
+// } 
+#include<stdio.h>
+int digitSum(int n)
+{
+    int sum = 0;
+    while (n != 0)
+    {
+        sum = sum + n % 10;
+        n /= 10;
+    }
+    return sum;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    loop: if (digitSum(n) / 10 == 0)
+        printf("%d", digitSum(n));
+    else
+    {
+        n = digitSum(n);
+        goto loop;
+    }
+    return 0;
+}
+
+//1110: 最近共同祖先（函数专题）
+//如上图所示，由正整数1, 2, 3, ...组成了一棵无限大的二叉树。从某一个结点到根结 点（编号是1 的结点）都有一条唯一的路径，比如从10 到根结点的路径是(10, 5, 2, 1)， 从4 到根结点的路径是(4, 2, 1)，从该结点到根结点的路径上的所有结点称为该结点的祖先。现在的问题就是，给定x 和y，求x和y的最近共同祖先，比如，10和4最近共同祖先是2，10和5的最近共同祖先是5。 定义递归函数 
+// int common(int x, int y) 
+// { 
+// 如果x==y, return x; 
+// 如果x>y，求x/2与y的共同祖先; 
+// 否则，求x与y/2的共同祖先; 
+// }
+#include<stdio.h>
+int common(int x, int y);
+int main()
+{
+	int m, n;
+	scanf("%d%d", &m, &n);
+	printf("%d\n", common(m, n));
+	return 0;
+}
+
+int common(int x, int y)
+{
+	if (x == y)
+		return x;
+	if (x > y)
+		return common(x / 2, y);
+	return common(x, y / 2);
+}
+
+//1111: 多个整数的逆序输出（函数专题）
+//输入n和n个整数，以与输入顺序相反的顺序输出这n个整数。要求不使用数组，而使用递归函数实现。递归函数实现过程如下：
+// void inverse(int n)
+// {
+//     if(n >1)
+//    {
+//         (1) 读入一个整数，存入num;
+//         (2)  将后面的n-1个数逆序输出: inverse(n-1);  
+//         (3)  输出num；
+//    }
+//  if( n == 1)  直接输出num；   
+// }
+#include<stdio.h>
+void inverse(int n)
+{
+    int num;
+    if (n >1)
+   {
+       scanf("%d", &num);
+       inverse(n - 1);
+       printf("%d ", num);
+   }
+    if (n == 1)
+    {
+        scanf("%d", &num);
+        printf("%d ", num);
+    }
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    inverse(n);
+    return 0;
+}
+
+//1112: 进制转换（函数专题）
+//输入一个十进制整数n，输出对应的二进制整数。常用的转换方法为“除2取余，倒序排列”。将一个十进制数除以2，得到余数和商，将得到的商再除以2，依次类推，直到商等于0为止，倒取除得的余数，即为所求的二进制数。例如，把52换算成二进制数的计算过程如下图：52除以2得到的余数依次为0,0,1,0,1,1，倒序排列，得到52对应的二进制数110100。用递归的思想来描述上述计算过程是这样的：输出n/2对应的二进制数，然后输入%2。递归函数的实现过程如下：
+// void convert(int n)
+// {
+//    if(n > 0)
+//    {
+//       调用自身，输出n/2对应的二进制数;
+//        输出n%2;
+//     }
+// }
+#include<stdio.h>
+void convert(int n)
+{
+   if (n > 0)
+    {
+        convert(n / 2);
+        printf("%d", n % 2);
+    }
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    convert(n);
+    return 0;
+}
+
+//1113: 递归调用的次数统计（函数专题）
+//如下程序的功能是计算 Fibonacci数列的第n项。函数fib()是一个递归函数。请你改写该程序，计算第n项的同时，统计调用了多少次函数fib（包括main()对fib()的调用）。
+// #include<stdio.h>
+// int fib(int k);
+// int main(void )
+// {
+//     int n;
+//     scanf("%d", &n);
+//     printf("%d\n", fib(n));   
+//     return 0;
+// }
+// int fib(int k)
+// {
+//     if(k == 1 || k == 2)
+//         return 1;
+//     else
+//         return fib(k-1) + fib(k-2);
+// }
+#include<stdio.h>
+int f = 0;
+int fib(int k);
+int main(void )
+{
+    int n;
+    scanf("%d", &n);
+    printf("%d\n", fib(n));
+    printf("递归调用了%d次", f);
+    return 0;
+}
+int fib(int k)
+{
+    f++;
+    if (k == 1 || k == 2)
+        return 1;
+    else
+        return fib(k-1) + fib(k-2);
+}
+
+//1114: 逆序（数组）
+//输入n（1<=n<=10）和n个整数，逆序输出这n个整数。
+#include<stdio.h>
+int main()
+{
+    int a[10] = { 0 };
+    int i, n;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    for (i = n - 1; i >= 0; i--)
+        printf("%4d", a[i]);
+    return 0;
+}
+
+//1115: 数组最小值（数组）
+//数组a有n个元素，请输出n个元素的最小值及其下标。若最小值有多个，请输出下标最小的一个。注意，有效下标从0开始。
+#include<stdio.h>
+int main()
+{
+    int a[1000] = { 0 };
+    int i, n, min, j;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    min = a[0], j = 0;
+    for (i = 0; i < n; i++)
+    {
+        if(a[i] < min)
+        {
+            min = a[i];
+            j = i;
+        }
+    }
+    printf("%d %d", min, j);
+    return 0;
+}
+
+//1116: 删除元素（数组）
+//输入一个递增有序的整型数组A有n个元素，删除下标为i的元素，使其仍保持连续有序。注意，有效下标从0开始。 定义如下两个函数分别实现删除元素操作和数组输出操作。
+// void del(int a[], int n, int i);  /*删除数组a中下标为i的元素*/
+// void PrintArr(int a[], int n); /*输出数组a的前n个元素*/
+#include<stdio.h>
+void del(int a[], int n, int i)
+{
+    int t;
+    for (t = i; t < n - 1; t++)
+    {
+        a[t] = a[t + 1];
+    }
+}
+void PrintArr(int a[], int n)
+{
+    int i;
+    for (i = 0; i < n - 1; i++)
+        printf("%d ", a[i]);
+}
+int main()
+{
+    int a[10] = { 0 };
+    int i, n, ddel;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    scanf("%d", &ddel);
+    del(a, n, ddel);
+    PrintArr(a, n);
+    return 0;
+}
+
+//1117: 查找数组元素（数组）
+//编写程序，输入n（1<=n<=10),输入n个整数构成一个数组，输入整数x，在这个数组中查找x是否存在，如果存在，删除x，后面元素依次向前添补空位，并输出删除元素后的数组。如果不存在，输出“Not Found”。定义一个查找函数find(),在数组a中查找x，若找不到函数返回-1，若找到返回x的下标，函数原型如下：int find(int a[], int n, int x); 然后在main()中，先调用函数find(),若查找失败输出“Not Found"；若查找成功，则调用上一题中定义的函数del()删除该元素，再调用上一题中的PrintArr()输出删除元素后的数组内容。
+#include<stdio.h>
+void del(int a[], int n, int i)
+{
+    int t;
+    for (t = i; t < n - 1; t++)
+    {
+        a[t] = a[t + 1];
+    }
+}
+int find(int a[], int n, int x)
+{
+    int t, s = 0;
+    for (t = 0; t < n; t++)
+    {
+        if (x == a[t])
+        {
+            s = t;
+            return s;
+        }
+    }
+    if(t >= n)
+        return -1;
+}
+void PrintArr(int a[], int n)
+{
+    int i;
+    for (i = 0; i < n - 1; i++)
+        printf("%4d", a[i]);
+}
+int main()
+{
+    int a[10] = { 0 };
+    int i, n, x;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    scanf("%d", &x);
+    if(find(a, n, x) != -1)
+    {
+        del(a, n, find(a, n, x));
+        PrintArr(a, n);
+    }
+    else
+        printf ("Not Found");
+    return 0;
+}
+
+//1118: 有序数组的元素添加
+//一个非递减有序的整型数组有n个元素，给定一个整数num，将num插入该序列的适当位置，使序列仍保持非递减有序。要求定义一个函数insert()，将整数num插入在数组a的适当位置上，函数原型如下：void insert(int a[], int n, int num);另外函数仍然调用以前定义过的函数PrintArr()输出数组所有元素。
+#include<stdio.h>
+void insert(int a[], int n, int num)
+{
+    int i, j;
+    for (i = n - 1; i >= 0; i--)
+    {
+        if (a[i] > num)
+            a[i + 1] = a[i];
+        else
+            break;
+    }
+    a[i + 1] = num;
+}
+void PrintArr(int a[], int n)
+{
+    int i, f = 0;
+    if(f == 0)
+    {
+        printf("%d", a[0]);
+        f = 1;
+    }
+    if(f != 0)
+    {
+    for (i = 1; i < n + 1; i++)
+        printf(" %d", a[i]);
+    }
+}
+int main()
+{
+    int a[1001] = { 0 };
+    int i, n, num;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    scanf("%d", &num);
+    insert(a, n, num);
+    PrintArr(a, n);
+    return 0;
+}
+
+//1119: 一维数组排序（数组）
+//对一维数组按照从小到大的顺序排序。程序定义函数sort()来实现数组a的排序。函数原型如下：void  sort(int a[], int n);数组元素的输出调用PrintArr()。
+#include<stdio.h>
+void  sort(int a[], int n)
+{
+    int i, j, temp;
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (a[j] > a[j + 1])
+            {
+                temp = a[j + 1];
+                a[j + 1] = a[j];
+                a[j] = temp;
+            }
+        }
+    }
+}
+void PrintArr(int a[], int n)
+{
+    int i;
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+}
+int main()
+{
+    int a[10] = { 0 };
+    int i, n;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    sort(a, n);
+    PrintArr(a, n);
+    return 0;
+}
+
+//1120: 最值交换
+//有一个长度为n的整数序列。请写一个程序，先把序列中的最小值与第一个数交换，再把最大值与最后一个数交换。输出转换好的序列。 分别编写两个函数MinIndex()和MaxIndex()来计算最小值下标和最大值下标。int MinIndex(int a[], int n);  //函数返回数组a中最小元素的下标int MaxIndex(int a[], int n);  //函数返回数组a中最大元素的下标数组元素的输出调用函数PrintArr()。
+#include<stdio.h>
+int MinIndex(int a[], int n)
+{
+    int i, m = 0, min = a[0];
+    for (i = 0; i < n; i++)
+    {
+        if (a[i] < min)
+        {
+            min = a[i];
+            m = i;
+        }
+    }
+    return m;
+}
+int MaxIndex(int a[], int n)
+{
+    int i, s = 0, max = a[0];
+    for (i = 0; i < n; i++)
+    {
+        if (a[i] > max)
+        {
+            max = a[i];
+            s = i;
+        }
+    }
+    return s;
+}
+void PrintArr(int a[], int n)
+{
+    int i;
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+}
+int main()
+{
+    int a[10] = { 0 };
+    int i, n;
+    int t;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    int smin = MinIndex(a, n);
+    t = a[0]; a[0] = a[smin]; a[smin] = t;
+    int smax = MaxIndex(a, n);
+    t = a[n - 1]; a[n - 1] = a[smax]; a[smax] = t;
+    PrintArr(a, n);
+    return 0;
+}
+
+//1121: 电梯
+//在某一高层建筑内只有一部电梯，当你按下一个数时，电梯会运行到那一层。已知电梯每上升一层需6秒，下降一层需4秒，在需要停留的那层停留5秒。现有N个整数组成的一个需求列表，电梯将依次响应，电梯从0层开始运行，而在运行过程结束之前不会返回0层。 注意，若出现相邻两个整数相等，代表在同一层执行了两个不同任务，可以理解为：电梯已经停了5秒，正要关门时又有人在同一层按开门键，电梯又开门并停留5秒。
