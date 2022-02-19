@@ -2672,3 +2672,2107 @@ int main()
 
 //1121: 电梯
 //在某一高层建筑内只有一部电梯，当你按下一个数时，电梯会运行到那一层。已知电梯每上升一层需6秒，下降一层需4秒，在需要停留的那层停留5秒。现有N个整数组成的一个需求列表，电梯将依次响应，电梯从0层开始运行，而在运行过程结束之前不会返回0层。 注意，若出现相邻两个整数相等，代表在同一层执行了两个不同任务，可以理解为：电梯已经停了5秒，正要关门时又有人在同一层按开门键，电梯又开门并停留5秒。
+#include<stdio.h>
+int main()
+{
+    int i, sum = 0, a[1000] = { 0 }, N;
+    scanf("%d", &N);
+    for (i = 1; i <= N; i++)
+        scanf("%d", &a[i]);
+    sum += 5 * N;
+    for (i = 1; i <= N; i++)
+    {
+        if (a[i - 1] > a[i])
+            sum += 4 * (a[i - 1] - a[i]);
+        if (a[i] > a[i - 1])
+            sum += 6 * (a[i] - a[i - 1]);
+    }
+    printf("%d", sum);
+    return 0;
+}
+
+//1122: 小明的调查作业
+//小明的老师布置了一份调查作业，小明想在学校中请一些同学一起做一项问卷调查，聪明的小明为了实验的客观性，想利用自己的计算机知识帮助自己。他先用计算机生成了N个1到1000之间的随机整数（0<N≤1000），对于其中重复的数字，只保留一个，把其余相同的数去掉，不同的数对应着不同的学生的学号。然后再把这些数从小到大排序，按照排好的顺序去找同学做调查。请你协助明明完成“去重”与“排序”的工作。
+#include<stdio.h>
+int main()
+{
+    int N, num, i, j, a[1000], t;
+    scanf("%d", &N);
+    num = N;
+    for (i = 0; i < N; i++)
+        scanf("%d",&a[i]);
+    for (i = 0; i < N - 1; i++)
+    {
+        for (j = i + 1; j < N; j++)
+        {
+            if (a[i] > a[j])
+            {
+                t = a[i];
+                a[i] = a[j];
+                a[j] = t;
+            }
+        }   
+    }
+    for (i = 0; i < N; i++)
+    {
+        if (a[i] == a[i + 1])
+        {
+            a[i] = 0;
+            num = num - 1;
+        }
+    }
+    printf("%d\n", num);
+    for (i = 0; i < N; i++)
+    {
+        if (a[i] == 0)
+            continue;
+        else
+            printf("%d ", a[i]);
+    }
+    // getchar();
+    return 0;
+}
+
+//1123: 成绩排序
+//给出班里某门课程的成绩单，请你按成绩从高到低对成绩单排序输出，如果有相同分数则名字字典序小的在前。
+#include<stdio.h>
+#include<string.h>
+typedef struct student
+{
+    char name[21];
+    int score;
+}Stu;
+int main()
+{
+    int n, i, j;
+    Stu stu[20];
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%s%d", stu[i].name, &stu[i].score);
+    Stu temp;
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (stu[i].score < stu[j].score)
+            {
+                temp = stu[i];
+                stu[i] = stu[j];
+                stu[j] = temp;
+            }
+        }
+    }
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (stu[i].score == stu[j].score)
+            {
+                if(strcmp(stu[i].name,stu[j].name) > 0)
+                {
+                    temp = stu[i];
+                    stu[i] = stu[j];
+                    stu[j] = temp;
+                }
+            }
+        }
+    }
+    for (i = 0; i < n; i++)
+        printf("%s %d\n", stu[i].name, stu[i].score);
+    return 0;
+}
+
+//1124: 两个有序数组合并
+//已知数组a中有m个按升序排列的元素，数组b中有n个按降序排列的元素，编程将a与b中的所有元素按降序存入数组c中。
+#include<stdio.h>//超时
+void sort(int a[], int n)
+{
+    int i, j, temp;
+    for (i = 0; i < n - 1; i++)
+        for (j = i + 1; j < n; j++)
+            if (a[i] < a[j])
+            {
+                temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+}
+int a[1000000];
+int main()
+{
+    int m, i, n, j;
+    scanf("%d", &m);
+    for (i = 0; i < m; i++)
+        scanf("%d", &a[i]);
+    scanf("%d", &n);
+    for (i = m; i < m + n; i++)
+        scanf("%d", &a[i]);
+    sort(a, m + n);
+    printf("%d", a[0]);
+    for (i = 1; i < m + n; i++)
+        printf(" %d", a[i]);
+    return 0;
+}
+
+//1125: 上三角矩阵的判断
+//编写程序，输入一个正整数n（1<=n<=10）和n阶方阵a中的元素，如果a是上三角矩阵，输出“YES”，否则，输出“NO”。 上三角矩阵即主对角线以下（不包括主对角线）的元素都为0的矩阵，主对角线为从矩阵的左上角至右下角的连线。要求定义函数IsUpperTriMatrix()判断矩阵a是否是上三角矩阵，如果是返回1，否则返回0。函数原型如下：
+//int IsUpperTriMatrix(int a[][], int n);
+#include <stdio.h> 
+int main() 
+{  
+    int a[10][10];
+    int flag = 1, i, j, n;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+    for (i = 0; i < n; i++)
+        for (j = 0; j < i; j++)
+            if (a[i][j] != 0)
+                flag = 0;
+    if (flag == 1)
+        printf("YES");
+    else
+        printf("NO");
+    return 0; 
+}
+
+//1126: 布尔矩阵的奇偶性
+//一个布尔方阵具有奇偶均势特性，当且仅当 每行、每列总和为偶数，即包含偶数个1。如下面这个4*4的矩阵就具有奇偶均势特性：
+// 1 0 1 0
+// 0 0 0 0
+// 1 1 1 1
+// 0 1 0 1
+// 编写程序，读入一个n阶方阵并检查它是否具有奇偶均势特性。如果没有，你的程序应当再检查一下它是否可以通过修改一位（把0改为1，把1改为0）来使它具有奇偶均势特性；如果不可能，这个矩阵就被认为是破坏了。定义并调用如下函数：
+// //int BalanceMatrix(int a[], int n);
+// 函数返回1表示该矩阵具有奇偶均势特性；函数返回2表示可以通过修改1位来达到奇偶均势；函数返回-1表示该矩阵被是破坏了，无法恢复。
+#include<stdio.h>
+int main()
+{
+    int n, i, j, x = 0, y = 0, flag1 = 1, flag2 = 1, num, count1 = 0, count2 = 0;
+    int a[100][100];
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+    for (i = 0; i < n; i++)
+    {
+        num = 0;
+        for (int j = 0; j < n; j++)
+            if (a[i][j] == 1)
+                num++;
+        if (num % 2 != 0)
+        {
+            flag1 = 0;
+            x = i;
+            count1++;
+        }
+    }
+    for (j = 0; j < n; j++)
+    {
+        num = 0;
+        for (i = 0; i < n; i++)
+            if (a[i][j] == 1)
+                num++;
+        if (num % 2 != 0)
+        {
+            flag2 = 0;
+            y = j;
+            count2++;
+        }
+    }
+    if (flag1 && flag2 == 1)
+        printf("OK");
+    else if (count1 == 1 && count2 == 1)
+        printf("Change bit(%d,%d)", x, y);
+    else
+        printf("Corrupt");
+    return 0;
+}
+
+//1127: 矩阵乘积
+//计算两个矩阵A和B的乘积。
+#include<stdio.h>
+int main()
+{
+    int m, p, n;
+    int A[10][10], B[10][10], C[10][10];
+    int i, j, o, sum;
+    scanf("%d%d%d", &m, &p, &n);
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < p; j++)
+        {
+            scanf("%d", &A[i][j]);
+        }
+    }
+    for (j = 0; j < p; j++)
+    {
+        for (o = 0; o < n; o++)
+        {
+            scanf("%d", &B[j][o]);
+        }
+	}
+    for (i = 0; i < m; i++)
+    {
+        for (o = 0; o < n; o++)
+        {
+            sum = 0;
+            for (j = 0; j < p; j++)
+            {
+                sum += A[i][j] * B[j][o];
+            }
+            C[i][o] = sum;
+        }
+    }
+    for (i = 0; i < m; i++)
+    {
+        for (o = 0; o < n; o++)
+        {
+            printf("%d ", C[i][o]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+//1128: 课程平均分
+//期末考试结束，班主任拿到了本班学生的成绩汇总表，由m行n列组成(本班共有m名学生，本学期有n门课程),每行是一个同学的n门课程成绩，请编写程序，计算并输出每门课的平均分，结果保留2位小数。
+#include<stdio.h>
+int main()
+{
+    int i, j, m, n;
+    double y, sum = 0, a[1000][10];
+    scanf("%d%d", &m, &n);
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            scanf("%lf", &a[i][j]);
+        }
+    }
+    for (j = 0; j < n; j++)
+    {
+        sum = 0;
+        for (i = 0; i < m; i++)
+        {
+            sum = sum + a[i][j];
+        }
+        y = sum / m;
+        if (j != n - 1)
+            printf("%.2lf ", y);
+        else
+            printf("%.2lf", y);
+    }
+    return 0;
+}
+
+//1129: 第几天
+//你知道，2012-1-1是该年的第1天，而9999-9-9呢？给你一个具体的日期，计算该日期是该年的第几天。
+#include<stdio.h>
+int main()
+{
+    int a, b, c, i, sum = 0, t;
+    int d[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    scanf("%d-%d-%d", &a, &b, &c);
+    if(a % 4 == 0 && a % 100 != 0 || a % 400 == 0)
+        d[2] = 29;
+    for (i = 1; i < b; i++)
+    {
+        sum += d[i];
+    }
+    t = sum + c;
+    printf("%d", t);
+    return 0;
+}
+
+//1130: 杨辉三角
+//还记得中学时候学过的杨辉三角吗？具体的定义这里不再描述，你可以参考以下的图形： 
+// 1 
+// 1 1 
+// 1 2 1 
+// 1 3 3 1 
+// 1 4 6 4 1 
+// 1 5 10 10 5 1
+#include<stdio.h>
+#include<stdio.h>
+int main()
+{
+    int a[30][30] = { 0 }, i, j, n;
+    scanf("%d", &n);
+    a[0][0] = a[1][0] = a[1][1] = 1;
+    for (i = 2; i < n; i++)
+    {
+        a[i][0] = a[i][i] = 1;
+        for (j = 1; j < i; j++)
+        {
+            a[i][j] = a[i - 1][j] + a[i - 1][j - 1];
+        }
+    }
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j <= i; j++)
+            printf("%d ", a[i][j]);
+        printf("\n");
+    }
+    return 0;
+}
+
+//1131: 最常用字符
+//英文字母里出现频率最高的是哪个字母呢? 给定一个字符串，输出字符串中出现次数最多的字母。
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+    char ch;
+    int max = 0, a[26] = {0}, i, f;
+    while (scanf("%c", &ch), ch != '\n')
+    {
+        if (ch >= 'a' && ch <= 'z')
+        {
+            i = ch - 'a';
+            a[i]++;
+        }
+        if(ch>='A'&&ch<='Z') 
+        {
+            i = ch - 'A';
+            a[i]++;
+        }
+    }
+    for (i = 0; i < 26; i++)
+    {
+        if (a[i] > max)
+        {
+            max = a[i];
+            f = i;
+        }
+
+    }
+    printf("%c\n", f + 'a');
+    return 0;
+}
+
+//1132: 数字字符统计(多实例)
+//对于给定的一个字符串，统计其中数字字符出现的次数。字符串长度不超过1000.
+#include<stdio.h>
+#include<ctype.h>
+int main()
+{
+    int i, n, sum;
+    char ch;
+    scanf("%d", &n);
+    getchar();
+    for (i = 0; i < n; i++)
+    {
+        sum = 0;
+        while (scanf("%c", &ch), ch != '\n')
+        {
+            if (isdigit(ch))
+                sum++;
+        }
+        printf("%d\n", sum);
+    }
+    return 0;
+}
+
+//1133: 单词个数统计
+//从键盘输入一行字符，长度小于1000。统计其中单词的个数，各单词以空格分隔，且空格数可以是多个。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char ch[1000];
+    int i, len, count;
+    gets(ch);
+    count = 0;
+    for (i = 0; ch[i] != '\0'; i++)
+    {
+        if (ch[i] != ' ' && ch[i + 1] == ' ')
+            count++;
+    }
+    len = strlen(ch);
+    if (ch[len - 1] != ' ')
+        count++;
+    printf("%d\n", count);
+    return 0;
+}
+
+//1134: 字符串转换
+//输入一个以回车结束的字符串，它由数字和字母组成，请过滤掉所有非数字字符，然后将数字字符串转换成十进制整数后乘以2输出。
+#include<stdio.h>//运行错误
+#include<ctype.h>
+#include<string.h>
+int main()
+{
+    int i, len, sum = 0;
+    char str[101];
+    gets(str);
+    len = strlen(str);
+    for (i = 0; i < len; i++)
+    {
+        if (isdigit(str[i]))
+            sum = sum * 10 + (str[i] - '0');
+    }
+    printf("%d\n", sum * 2);
+    return 0;
+}
+
+//1135: 算菜价
+//妈妈每天都要出去买菜，但是回来后，兜里的钱也懒得数一数，到底花了多少钱真是一笔糊涂帐。现在好了，作为好儿子（女儿）的你可以给她用程序算一下了，呵呵。
+#include<stdio.h>
+int main()
+{
+    double w, p, sum = 0;
+    char str[100];
+    while (scanf("%*s%lf%lf", &w, &p) != EOF)
+    {
+        sum += w * p;
+    }
+    printf("%.1lf", sum);
+    return 0;
+}
+
+//1136: 首字母变大写
+//输入一个只包含大小写英文字母和空格的句子，将每个单词的第一个字母改成大写字母。
+#include<stdio.h>
+#include<ctype.h>
+int main()
+{
+    int i;
+    char ch[100];
+    gets(ch);
+    for (i = 0; ch[i] != '\0'; i++)
+    {
+        if (isalnum(ch[i]) && ch[i - 1] == ' ')
+        {
+            if (islower(ch[i]))
+            {
+                ch[i] = toupper(ch[i]);
+            }
+		}
+	}
+    if (islower(ch[0]))
+        ch[0] = toupper(ch[0]);
+    printf("%s\n", ch);
+    return 0;
+}
+
+//1137: 查找最大元素
+//对于输入的字符串，查找其中的最大字母，在该字母后面插入字符串“(max)”。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char str[200];
+    int i, max, n;
+    gets(str);
+    n = strlen(str);
+    max = str[0];
+    for (i = 0; i < n; i++)
+    {
+        if (str[i] > max)
+            max = str[i];
+    }
+    for (i = 0; i < n; i++)
+    {
+        if (str[i] == max)
+            printf("%c(max)", str[i]);
+        else
+            printf("%c", str[i]);
+    }
+    return 0;
+}
+
+//1138: C语言合法标识符
+//输入一个字符串，判断其是否是C的合法标识符。
+#include<stdio.h>
+#include<ctype.h>
+int main()
+{
+    char ch[51], flag = 1;
+    int i;
+    gets(ch);
+    for (i = 0; ch[i] != '\0'; i++)
+    {
+        if (i == 0 && isdigit(ch[i]))
+        {
+            flag = 0;
+            continue;
+        }
+        if (! ((ch[i] >= '0' && ch[i] <= '9') || (ch[i] >= 'a' && ch[i] <= 'z') || (ch[i] > 'A' && ch[i] <= 'Z') || ch[i] == '_'))
+        {
+            flag = 0;
+            continue;
+        }	
+    }
+    if (flag == 1)
+        printf("yes");
+    else
+        printf("no");
+    return 0;
+}
+
+//1139: 输出最短字符串
+//输入n和n个字符串，输出其中最短的字符串。若长度相同则输出出现较早的那一个。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    int n, i;
+    char a[1000], min[1000];
+    scanf("%d", &n);
+    getchar();
+    gets(a);
+    strcpy(min, a);
+    for (i = 0; i < n; i++)
+    {
+        gets(a);
+        if (strlen(a) < strlen(min))
+            strcpy(min, a);
+    }
+    printf("%s", min);
+    return 0;
+}
+
+//1140: 小数点后第n位(多实例)
+//给你一个小数x，让你算出小数点后第n位是什么，1 <= n <= 6。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    int n, t, i, j;
+    char a[100];
+    scanf("%d", &t);
+    for (i = 0; i < t; i++)
+    {
+        scanf("%s%d", a, &n);
+        for (j = 0; a[j] != '\0'; j++)
+        {
+            if (a[j] == '.')
+                break;
+        }
+        if ((j + n) >= strlen(a))
+            printf("0\n");
+        else
+            printf("%c\n", a[j + n]);
+    }
+    return 0;
+}
+
+//1141: 进制转换
+//将十进制整数n转换成二进制，并保存在字符数组中，最后输出。要求定义并调用convert()函数, 将十进制整数n对应的二进制数存入字符数组str中。
+// void convert(int n, char str[]);
+#include<stdio.h>
+#include<string.h>
+void convert(int n, char str[])
+{
+    int len = 0;
+    for (int i = 0; n != 0; i++)
+    {
+        str[i] = n % 2 + '0';
+        n /= 2;
+    }
+    len = strlen(str);
+    for (int j = len - 1; j >= 0; j--)
+    {
+        printf("%c", str[j]);
+    }
+}
+int main()
+{
+    int n;
+    int m = 0;
+    char str[1001];
+    scanf("%d", &n);
+    if (n == 0)
+        printf("%d", m);
+    convert(n, str);
+    return 0;
+}
+
+//1142: 二进制数的大小
+//输入三个2 进制的数，要求将这三个二进制数对应的十进制整数按从小到大的顺序输。 要求程序定义一个bToD()函数和一个main()函数，bToD() 函数的功能是将二进制数转化为十进制整数，其余功能在main()函数中实现。 
+// int bToD(char str[]) 
+// {
+// //函数返回二进制数str对应十进制整数 
+// }
+#include <stdio.h>
+#include <string.h>
+int bToD(char str[])
+{
+    int i = 0, sum = 0;
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        sum = sum * 2 + (str[i] - '0');
+
+    }
+    return sum;
+}
+int main()
+{
+    char str[30];
+    int temp, s[30], i, j;
+    for (i = 0; i < 3; i++)
+    {
+        scanf("%s", str);
+        s[i] = bToD(str);
+    }
+    for (i = 0; i < 2; i++)
+    {
+        for (j = i + 1; j < 3; j++)
+        {
+            if (s[i] > s[j])
+            {
+                temp = s[i];
+                s[i] = s[j];
+                s[j] = temp;
+            }
+        }
+    }
+    for (i = 0; i < 3; i++)
+    {
+        printf("%d ", s[i]);
+    }
+    return 0;
+}
+
+//1143: 最大值—多种进制
+//输入n个数，每个数的进制由其后面的数字k指定，k>=2且k<=10， 输出最大的数对应的十进制数。 要求程序定义一个KTod()函数和一个main()函数，KToD() 函数的功能是将k进制数转化为十进制整数，其余功能在main()函数中实现。 
+// int KToD(char str[], int k) 
+// { 
+// //函数返回k进制数str对应十进制整数 
+// }
+#include<stdio.h>
+#include<string.h>
+#define N 50
+int KTOD (int k,char str[])
+{
+    int i, d = 0;
+    for (i = 0; str[i] != '\0'; i++)
+        d = d * k + (str[i] - '0');
+    return d;
+}
+int sort(int num, int a[])
+{
+    int i, j, max, temp;
+    for (i = 0; i < num - 1; i++)
+    {
+        for (j = i + 1; j < num; j++)
+            if (a[i] > a[j])
+            {
+                temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+			}
+	}
+    max = a[num - 1];
+    return max;
+}
+int main ()
+{
+    int n, k, num, i = 0, j, max;
+    char str[N];
+    int a[N];
+    scanf("%d", &n);
+    while (n--)
+    {
+        scanf("%s", str);
+        scanf("%d", &k);
+        a[i++] = KTOD(k, str);
+    }
+    num = i;
+    max = sort(num, a);
+    printf("%d", max);
+}
+
+//1144: 多种进制
+//输入一个十进制整数n，转换成2、3、7、8进制输出 要求程序定义一个dToK()函数，功能是将十进制数转化为k进制整数，其余功能在main()函数中实现。 
+// void dToK(int n, int k, char str[]) 
+// { 
+// //将n转化为k进制数，存入str 
+// }
+#include<stdio.h>
+void dToK(int n, int k, char str[])
+{
+    int i, len;
+    for (i = 0; n != 0; i++)
+    {
+        str[i] = n % k + '0';
+        n /= k;
+    }
+    for (i = i - 1; i >= 0; i--)
+    {
+        printf("%c", str[i]);
+    }
+    printf("\n");
+}
+int main()
+{
+    int n;
+    char str[1000];
+    scanf("%d", &n);
+    dToK(n, 2, str);
+    dToK(n, 3, str);
+    dToK(n, 7, str);
+    dToK(n, 8, str);
+    return 0;
+}
+
+//1145: 有问题的里程表（2）
+//某辆汽车有一个里程表，该里程表可以显示一个整数，为该车走过的公里数。然而这个里程表有个毛病：它总是从3变到5，而跳过数字4，里程表所有位（个位、 十位、百位等）上的数字都是如此。例如，如果里程表显示15339,汽车走过1公里之后，该里程表显示15350。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    int i, t = 0;
+    char a[10];
+    scanf("%s", a);
+    for (i = 0; i < strlen(a); i++)
+    {
+        if (a[i] > '4')
+            a[i]--;
+        t = t * 9 + (a[i] - '0');
+    }
+    printf("%d",t);
+    return 0;
+}
+
+//1146: 吃糖果
+//HOHO，终于从Speakless手上赢走了所有的糖果，是Gardon吃糖果时有个特殊的癖好，就是不喜欢连续两次吃一样的糖果，喜欢先吃一颗A种类的糖果，下一次换一种口味，吃一颗B种类的糖果，这样；可是Gardon不知道是否存在一种吃糖果的顺序使得他能把所有糖果都吃完？请你写个程序帮忙计算一下。 
+#include<stdio.h>
+int main()
+{
+    int i, j, T, N, Mi, sum, max;
+    scanf("%d", &T);
+    for (i = 0; i < T; i++)
+    {
+        sum = max = 0;
+        scanf("%d", &N);
+        for (j = 0; j < N; j++)
+        {
+            scanf("%d", &Mi);
+            sum += Mi;
+            if (Mi > max)
+                max = Mi;
+        }
+    //剩下的糖果总数sum-max大于最多的哪一种中间的空max-1，说明可以实现不重复排列
+    if (max - 1 <= sum - max)
+        printf("Yes\n");
+    else
+        printf("No\n");
+    }
+    return 0;
+}
+
+//1147: 查找子数组
+//给定两个整型数组，数组a有n个元素， 数组b有m个元素，1<=m<=n<100,请检验数组b是否是数组a的子数组。若从数组a的某个元素a[i]开始，有b[0]=a[i],b[1]=a[i+1],......，b[m]=a[i+m]，则称数组b是数组a的子数组。
+#include<stdio.h>
+int main()
+{
+    int i, j, n, m, k, f, c = 0;
+    int a[100], b[100];
+    scanf("%d%d", &n, &m);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    for (i = 0; i < m; i++)
+        scanf("%d", &b[i]);
+    for (i = 0; i < n; i++)
+    {
+        f = 1;
+        if (b[0] == a[i])
+        {
+            for (j = 1; j < m; j++)
+            {
+                if (b[j] != a[i + j])
+                {
+                    f = 0;
+                    break;
+                }
+            }
+            if (f == 1)
+            {
+                c = 1;
+                printf("%d\n", i);
+            }
+        }
+    }
+    if (c == 0)
+        printf("No Answer\n");
+    return 0;
+}
+
+//1148: 组合三位数之一
+//把1、2、3、4、5、6、7、8、9组合成3个3位数，要求每个数字仅使用一次，使每个3位数均为完全平方数。按从小到大的顺序输出这三个三位数。
+#include<stdio.h>
+int main()
+{
+    printf("361 ");
+    printf("529 ");
+    printf("784");
+    return 0;
+}
+
+//1149: 组合三位数之二
+//把1，2，3，4，5，6，7，8，9，组成三个三位数（每个数只能用一次）,第二个数是第一个数的2倍，第三个数是第一个数的3倍，这三个三位数各是多少？答案可能有很多组，请按第一个数的升序顺序输出每组的三个三位数。
+#include<stdio.h>
+#include<string.h>
+//判断这个三位数是否有重复的数字,没有重复返回1,个位十位不为0
+int doub(a)
+{
+    if ((a % 10 != a / 100) && (a / 100 != a / 10 % 10) && (a % 10 != a / 10 % 10) && a % 10 != 0 && a / 10 % 10 != 0)
+        return 1;
+    return 0;
+}
+//判断两个三位数是否有重复的数字,没有重复返回1
+int Isrepeat(a,b){
+    if (b % 10 == a % 10 || b % 10 == a / 10 % 10 || b % 10 == a / 100)
+        return 0;
+    if (b / 10 % 10 == a % 10 || b / 10 % 10 == a / 10 % 10 || b / 10 % 10 == a / 100)
+        return 0;
+    if (b / 100 == a % 10 || b / 100 == a / 10 % 10 || b / 100 == a / 100)
+        return 0;
+    return 1;
+}
+int main()
+{
+    int a[50];
+    for (int i = 123; i < 330; i++)
+    {
+        //三个数各自没有重复的数字
+        if (doub(i) && doub(2 * i) && doub(3 * i))
+        {
+            //三个数都没有重复的数字
+            if (Isrepeat(i, 2 * i) && Isrepeat(2 * i, 3 * i) && Isrepeat(i, 3 * i))
+            {
+                printf("%d %d %d\n", i, 2 * i, 3 * i);
+            }
+        }
+    }
+    return 0;
+}
+
+//1150: 数数多少个整数
+//小明的老师给小明出了一道题目：数数一篇文章出现了多少个数字，请你帮帮他吧。
+#include<stdio.h>
+int main()
+{
+    char a[1000];
+    int i, n = 0, f = 0;
+    gets(a);
+    for (i = 0; a[i] != '\0'; i++)
+    {
+        if (a[i] == '0' && f == 0)
+            n++;
+        if (a[i] > '0' && a[i] <= '9' && f == 0)
+        {
+            n++;
+            f = 1;
+        }
+        if (a[i] == ' ' || a[i] > '9')
+            f = 0;
+    }
+    printf("%d\n", n);
+    return 0;
+}
+
+//1151: 大整数加法
+//比利经常会碰到超大整数的加法运算，而普通的计算器上无法进行。因此他想你帮他写一个程序来计算结果。
+
+//1152: 二分搜索
+//在有序序列中查找某一元素x。
+#include<stdio.h>
+int a[100000];
+int find(int a[], int n, int x)
+{
+    int low = 0, hight = n - 1, mid;
+    while(low<=hight)
+    {
+        mid = (low + hight) / 2;
+        if (a[mid] == x)
+            return mid;
+        else if (a[mid] < x)
+            low = mid + 1;
+        else if (a[mid] > x)
+            hight = mid - 1;
+    }
+    return -1;
+}
+int main()
+{
+    int n, i, m, x, k;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+    scanf("%d", &m);
+    while(m--)
+    {
+        scanf("%d", &x);
+        k = find(a, n, x);
+        if (k == -1)
+            printf("Not found!\n");
+        else
+            printf("%d\n", k);
+    }
+    return 0;
+}
+
+//1153: 简易版最长序列(多实例)
+//给你一组数(未排序)，请你设计一个程序：求出里面个数最多的数。并输出这个数的长度。 例如：给你的数是：1、 2、 3、 3、 4、 4、 5、 5、 5 、6, 其中只有6组数：1, 2, 3-3, 4-4, 5-5-5 and 6. 最长的是5那组，长度为3。所以输出3。 
+#include<stdio.h>
+int find(int a[], int n, int x)
+{
+    int i, sum = 0;
+    for (i = 0; i < n; i++)
+    {
+        if (a[i] == x)
+            sum++;
+    }
+    return sum;
+}
+int main()
+{
+    int i, j, t, n, a[10000], f, max;
+    scanf("%d", &t);
+    while(t--)
+	{
+        max = -1;
+        scanf("%d", &n);
+        for (i = 0; i < n; i++)
+            scanf("%d", &a[i]);
+        for (i = 0; i < n; i++)
+        {
+            f = find(a, n, a[i]);
+            if (f > max)
+                max = f;
+        }
+        printf("%d\n", max);
+    }
+    return 0;
+}
+
+//1154: 校门外的树
+//某校大门外长度为L 的马路上有一排树，每两棵相邻的树之间的间隔都是1 米。我们可以把马路看成一个数轴，马路的一端在数轴0 的位置，另一端在L 的位置；数轴上的每个整数点，即0，1，2，……，L，都种有一棵树。 由于马路上有一些区域要用来建地铁。这些区域用它们在数轴上的起始点和终止点表示。已知任一区域的起始点和终止点的坐标都是整数，区域之间可能有重合的部分。现在要把这些区域中的树（包括区域端点处的两棵树）移走。你的任务是计算将这些树都移走后，马路上还有多少棵树。
+#include<stdio.h>
+int main()
+{
+    int n, l, m, i, j, a, b, sum = 0;
+    scanf("%d", &n);
+    while(n--)
+    {
+        sum = 0;
+        int t[10000] = {0};
+        scanf("%d%d", &l, &m);
+        for (i = 0; i < m; i++)
+        {
+            scanf("%d%d", &a, &b);
+            for (j = a; j <= b; j++)
+            {
+                t[j]++;
+            }
+        }
+        for (i = 0; i <= l; i++)
+        {
+            if (t[i] != 0)
+                sum += 1;
+        }
+        printf("%d\n", l + 1 - sum);
+    }
+    return 0;
+}
+
+//1155: 字符串比较（多实例）
+//比较字符串大小，但比较的规则不同字典序规则。字符比较新规则如下：A < a < B < b < ………… < Z < z。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    int m, n, i, max;
+    char a[10000] = {0}, b[10000] = {0};
+    while (scanf("%s%s", a, b) != EOF)
+    {
+        m = strlen(a);
+        n = strlen(b);
+        if (strcmp(a, b) == 0)
+            printf("NO\n");
+        else
+        {
+            max = m > n ? m : n;
+            for (i = 0; i < max; i++)
+            {
+                if (a[i] == b[i])
+                    continue;
+                else
+                {
+                    if ((a[i] >= 'a' && a[i] <= 'z' && b[i] >= 'a' && b[i] <= 'z') || (a[i] >= 'A' && a[i] <= 'Z' && b[i] >= 'A' && b[i] <= 'Z'))
+                    {
+                        if (a[i] < b[i])
+                        {
+                            printf("YES\n");
+                            break;
+                        }
+                        else
+                        {
+                            printf("NO\n");
+                            break;
+                        }
+                    }
+                    else if (a[i] >= 'a' && a[i] <= 'z' && b[i] >= 'A' && b[i] <= 'Z')
+                    {
+                        if (a[i] - 32 < b[i])
+                        {
+                            printf("YES\n");
+                            break;
+                        }
+                        else
+                        {
+                            printf("NO\n");
+                            break;
+                        }
+                    }
+                    else if (a[i] >= 'A' && a[i] <= 'Z' && b[i] >= 'a' && b[i] <= 'z')
+                    {
+                        if (a[i] + 32 <= b[i])
+                        {
+                            printf("YES\n");
+                            break;
+                        }
+                        else
+                        {
+                            printf("NO\n");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (a[i] < b[i])
+                        {
+                            printf("YES\n");
+                            break;
+                        }
+                        else
+                        {
+                            printf("NO\n");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0; 
+}
+
+//1156: 单数变复数
+//输入一个名词英语单词，按照英语语法规则把单数变成复数。规则如下： （1） 以辅音字母y结尾，变y为i，再加es； （2） 以s, x, ch, sh结尾，则加es； （3） 以元音o结尾，则加es； （4） 其他情况加上s。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char x[20];
+    scanf("%s", x);
+    int flag, len = strlen(x);
+    if (x[len - 1] == 'o')
+    {
+        printf("%ses", x);
+    }
+    else
+        if (x[len - 1] == 'y')
+        {
+            x[len - 1] = 'i';
+            printf("%ses", x);
+        }
+        else if (x[len - 1] == 's' || x[len - 1] == 'x' || (x[len - 1] == 'h' && (x[len - 2] == 'c' || x[len - 2] == 's')))
+        {
+            printf("%ses", x);
+        }
+        else
+        {
+            printf("%ss", x);
+    }
+    return 0;
+}
+
+//1157: 连续的n个1
+//计算机数据都是由0和1组成的，看着长长的0101001110101111011，要找出连续n个1的子串有多少个，确实麻烦，请你编程实现吧。
+#include<stdio.h>
+#include<string.h> 
+int main()
+{
+    int i, n, t = 0, j, m = 0, k;
+    char str[1000];
+    scanf("%s", str);
+    k = strlen(str);
+    scanf("%d", &n);
+    for (i = 0; i < k - n + 1; i++)
+    {
+        t = 0;
+        for (j = 0; j < n; j++)
+        {
+            if (str[i + j] != '1')
+                t = t;
+            else
+                t += 1;
+            if (t == n)
+            {
+                m++;
+            }
+        }
+    }
+    printf("%d", m);
+    return 0;
+}
+
+//1158: 又是排序（指针专题）
+//将输入的四个整数按由大到小的顺序输出。 已定义如下swap函数，可实现形参pa和pb所指内存单元的内容交换。请务必使用本函数实现两个变量内容的互换。 
+// void swap( int *pa, int *pb) 
+// { 
+// int t; 
+// t=*pa; *pa=*pb; *pb=t; 
+// } 
+#include <stdio.h>
+void swap(int *pa, int *pb)
+{
+    int t;
+    t = *pa;
+    *pa = *pb;
+    *pb = t;
+}
+int main()
+{
+    int i, j, a[4];
+    for (i = 0; i < 4; i++)
+        scanf("%d", &a[i]);
+    for (i = 0; i < 4; i++)
+    {
+        for (j = i + 1; j < 4; j++)
+        {
+            if (a[i] < a[j])
+                swap(&a[i], &a[j]);
+        }
+    }
+    for (i = 0; i < 4; i++)
+    {
+        if (i == 0)
+            printf("%d", a[i]);
+        else
+            printf(" %d", a[i]);
+    }
+    return 0;
+}
+
+//1159: 最大的两个数（指针专题）
+//求n个整数中的最大的两个元素。要求定义一个函数LargestTow()，求数组a的最大的两个元素，分别存入形参指针pfirst和psecond所指存储单元，函数原型如下：
+// void LargestTow(int a[],int n,int *pfirst,int *psecond) 
+// { 
+// /*数组a有n个元素，将数组中的最大值存入形参指针pfirst所指内存单元，将数组中第二大的值存入形参指针psecond所指内存单元。 */
+// }
+#include<stdio.h>
+#include<limits.h>
+void LargestTow(int a[],int n,int *pfirst,int *psecond)
+{
+    int t, i, j;
+    *pfirst = INT_MIN;
+    *psecond = INT_MIN;
+    for (i = 0; i < n; i++)
+    {
+        if (a[i] > *pfirst)
+        {
+            *pfirst = a[i];
+            j = i;
+        }
+
+    }
+    for (i = 0; i < n; i++)
+    {
+        if (i == j)
+            continue;
+        if (a[i] > *psecond)
+            *psecond = a[i];
+    }
+    if (*pfirst < *psecond)
+    {
+        t = *pfirst;
+        *pfirst = *psecond;
+        *psecond = t;
+    }
+}
+int main()
+{
+    int n, i = 0, j;
+    scanf("%d", &n);
+    j = n;
+    int a[n], *pfirst, *psecond, maxf, maxs;
+    pfirst = &maxf, psecond = &maxs;
+    while(j--)
+        scanf("%d", &a[i++]);
+    LargestTow(a, n, pfirst, psecond);
+    printf("%d %d", maxf, maxs);
+    return 0;
+}
+
+//1160: 矩阵的最大值（指针专题）
+//找出一个2×3的整数矩阵中的最大值及其行下标和列下标，要求调用函数FindMax(int p[][3], int m, int n, int *pRow, int *pCol)实现，行下标和列下标在形参中以指针的形式返回。 
+// void FindMax(int p[][3], int m, int n, int *pRow, int *pCol)
+// { 
+// //在m*n矩阵p中查找最大值，将其行下标存入pRow所指内存单元，将其列下标存入pCol所指内存单元 
+// } 
+#include<stdio.h>
+void FindMax(int p[][3], int m, int n, int *pRow, int *pCol)
+{
+
+    int i, j, max, x = 0, y = 0;
+    max = p[0][0];
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            if (p[i][j] > max)
+            {
+                max = p[i][j];
+                x = i;
+                y = j;
+            }
+        }
+    }
+    printf("%d %d %d\n", max, x, y);
+}
+int main()
+{
+    int a[2][3];
+    int i, j, max;
+    for (i = 0; i < 2; i++)
+        for (j = 0; j < 3; j++)
+            scanf("%d", &a[i][j]);
+    FindMax(a, 2, 3, &i, &j);
+    return 0;
+}
+
+//1161: 字符串长度（指针专题）
+//编写一函数len，求一个字符串的长度，注意该长度不计空格。要求用字符指针实现。在主函数中输入字符串，调用该len函数后输出其长度。 
+// int len(char *sp) 
+// { 
+// //实现sp所指串的长度，不计空格。 
+// } 
+#include<stdio.h>
+int len(char *sp) 
+{
+    int count = 0;
+    while (*sp != '\0')
+    {
+        if (*sp != ' ')
+        {
+            count++;
+        }
+        sp++;
+    }
+    return count;
+}
+int main()
+{
+    char str[100];
+    gets(str);
+    printf("%d", len(str));
+    return 0;
+}
+
+//1162: 循环移动（指针专题）
+//有n个整数，使前面各数顺序向后移动k个位置，移出的数再从开头移入。输出移动后的数组元素。 题目没有告诉你n的范围，希望你读入n之后用malloc()函数动态申请内存空间，不要提前定义数组的大小。不要偷懒哦。 另外要求定义并使用函数ringShift() 
+// void ringShift(int *a, int n, int k) 
+// { 
+// //循环移动后的数值仍然存入数组a中 
+// }
+#include<stdio.h>
+#include<stdlib.h>
+void ringShift(int *a, int n, int k)
+{
+    int *b, i;
+    b = (int *)malloc(n * sizeof(int));
+    for (i = 0; i < n; i++)
+    {
+        if (i + k < n)
+        {
+            b[i + k] = a[i];
+        }
+        else
+        {
+            b[i + k - n] = a[i];
+        }
+    }
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", b[i]);
+    }
+    free(b);
+}
+int main()
+{
+    int n, k, i;
+    scanf("%d", &n);
+    int *a;
+    a = (int *)malloc(n * sizeof(int));
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+    scanf("%d", &k);
+    ringShift(a, n, k);
+    free(a);
+    return 0;
+}
+
+//1163: 亲和串（字符串）
+//判断亲和串。亲和串的定义是这样的：给定两个字符串s1和s2,如果能通过s1循环移位，使s2包含在s1中，那么我们就说s2 是s1的亲和串。
+#include<stdio.h>
+#include<string.h> 
+int main()
+{
+    char s1[200000], s2[100000], s3[100000];
+    int i, len1, len2;
+    while (scanf("%s%s", s1, s2) != EOF)
+    {
+        len1 = strlen(s1);
+        len2 = strlen(s2);
+        if (len1 < len2)
+            printf("no\n");
+        else
+        {
+            strcpy(s3, s1);
+            strcat(s1, s3);
+            if (strstr(s1, s2) != NULL)
+                printf("yes\n");
+            else
+                printf("no\n");
+        }
+    }
+    return 0;
+}
+
+//1164: 在线判题（字符串）
+//LittleTom开发了一个在线判题系统，判题系统需要把用户提交上来的代码编译成可执行文件，然后运行。而用户会提交什么样的代码是无法预知的，所以LittleTom做了充分的准备，比如阻止解题程序访问文件系统、阻止解题程序访问注册表、阻止解题程序修改系统设置、阻止解题程序关闭系统、阻止解题程序超限或非法使用内存、阻止解题程序的运行时间超过设定时间等。这些工作LitteTom都已完成。还有一个待解决的问题是判断解题程序的正确性。判题系统需要把解题程序产生的输出文件和正确的输出文件进行比较，如果两个文件完全相同，则判题系统返回“Accepted”，否则，如果两个文件除了空白符(空格' ', 制表符'\t', 或 回车符'\n')之外其余内容都相同，则判题系统返回“Presentation Error”，否则判题系统返回“Wrong Answer”。给定两个文件，一个代表正确输出，一个代表用户的解题程序的输出，你的任务是计算判题系统应该返回什么信息。
+
+//1165: 实数的小数部分（指针专题）
+//读入一个实数，输出该实数的小数部分，小数部分若多余的末尾0，请去掉。如输入111111.12345678912345678900 则输出0.123456789123456789。若去掉末尾0之后小数部分为0，则输出“No decimal part”。注意该实数的位数不超过100位。 请定义并使用如下函数。 
+// char *decimal(char *p) 
+// { 
+// 将字符串p表示的实数的自小数点开始的小数部分存入一个字符串，并由函数返回，若p为“123.456”，则返回的字符串为“.456”。若小数部分为0,返回空指针NULL。 
+// } 
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char a[100];
+    int i, len, point, n, k = 1;
+    gets(a);
+    len = strlen(a);
+    for(i = 0; i < len; i++)
+    {
+        if(a[i] == '.')
+        {
+            point = i;
+            break;
+        }
+    }
+    if(a[len - 1] != '0')
+    {
+        printf("0");
+        for(i = point; i < len; i++)
+            printf("%c",a[i]);
+    }
+    else
+    {
+        for(i = len - 1; i > point; i--)
+        {
+            if(a[i] == '0')
+                k++;
+            else
+                break;
+        }
+        printf("0");
+        for(i = point; i <= len - k; i++)
+        {
+            printf("%c",a[i]);
+        }
+    }
+    return 0;
+}
+
+//1166: 实数取整（指针专题）
+//读入一个实数，输出实数的整数部分。注意该实数的位数不超过100位。输入的整数部分可能含有不必要的前导0，输出时应去掉，当然，若整数部分为0，则该0不能去掉。如输入0023.56732，输出应为23，而不是0023；0.123对应的输出应为0。当然输入也可能不含小数部分。 要求定义并使用rounding()函数，原型如下： 
+// char *rounding(char *p) 
+// { 
+// //将字符串p表示的实数取整后生成新的字符串，并由函数返回 
+// } 
+#include<stdio.h>
+#include<string.h>
+char *rounding(char *p)
+{
+    int i, len, k, flag = 0;
+    char *r;
+    len = strlen(p);
+    for (i = 0; i < len; i++)
+    {
+        if (*(p + i) == '.')
+        {
+            k = i;
+            *(p + k) = '\0';
+        }
+        else
+            k = i;
+    }
+    for (i = 0; i < k; i++)
+    {
+        if (*(p + i) == '0')
+            flag++;
+        else
+            break;
+    }
+    r = p + flag;
+    return r;
+}
+int main()
+{
+    char str[101], *q;
+    gets(str);
+    q = rounding(str);
+    printf("%s\n", q);
+    return 0;
+}
+
+//1167: 逆转数（指针专题）
+//任意给你一个整数，这个数可能很大（最长不超过100位），你能求出它的逆转数吗？ 逆转数定义如下： 1.一个末尾没有0的整数，它的逆转数就是各位数字逆序输出； 2.一个负数的逆转数仍是负数； 3.一个末尾有0的整数，它的逆转数如同下例： reverse (1200) = 2100 reverse (-56) = -65 要求定义并使用如下函数： 
+// void reverse(char *str) 
+// { 
+// //函数求出str的逆转数并存入str。 
+// } 
+#include<stdio.h>
+#include<string.h>
+void reverse(char *str)
+{
+	int left = 0, right, len = strlen(str), i, j;
+	char t;
+	if (*str == '-')
+		left = 1;
+  	for (i = len - 1; i >= 0; i--)
+    {
+        if(*(str + i) != '0')
+        {
+            right = i;
+            break;
+        }
+    }   
+	for(i = left, j = right; i <= (right + left) / 2; i++, j--)
+	{
+		t = *(str + i);
+		*(str + i) = *(str + j);
+		*(str + j) = t;
+	}
+}
+int main()
+{
+	char str[101];
+	gets(str);
+	reverse(str);
+	puts(str);
+	return 0;
+}
+
+//1168: 账单（指针专题,多实例）
+//每到月末，小明就会对这个月的支出账单进行整理和统计。如今电脑已经普及大学校园，所以小明想让电脑帮忙做这件事情。聪明的你就为小明编一个程序来完成这件事情吧。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    int ncase, n, i;
+    double price, count = 0;
+    char s[100], *p;
+    scanf("%d", &ncase);
+    while (ncase--)
+    {
+        scanf("%d", &n);
+        getchar();
+        count = 0;
+        while (n--)
+        {
+            gets(s);
+            p = strrchr(s, ' ');
+            sscanf(p, "%lf", &price);
+            count += price;
+        }
+        printf("%.1f\n", count);
+    }
+	return 0;
+}
+
+//1169: 大整数（指针专题）
+//输入3个大整数，位数不超过100位，按从小到大的顺序输出这三个整数。要求定义并使用如下函数比较两个大整数的大小。 
+// int cmp(char *a,char *b) 
+// { 
+// //若大整数a大于b，返回1； 
+// //若a小于b，返回-1； 
+// // 若a与b相等，返回0 
+// }
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int cmp(char *a, char *b)
+{
+    int length1 = strlen(a);
+    int length2 = strlen(b);
+    if (length1 > length2)
+    {
+        return 1;
+    }
+    else if (length1 < length2)
+    {
+        return -1;
+    }
+    else
+    {
+        for (int i = 0; i < length1; i++)
+        {
+            if (*(a + i) < *(b + i))
+            {
+                return -1;
+            }
+            else if (*(a + i) > *(b + i))
+            {
+                return 1;
+            }
+        }
+        return 0;
+    }
+}
+
+int main()
+{
+    char *p[3], temp[101];
+    for (int i = 0; i < 3; i++)
+    {
+        p[i] = (char *)malloc(sizeof(char) * 101);
+        scanf("%s", p[i]);
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = i + 1; j < 3; j++)
+        {
+            if (cmp(p[i], p[j]) > 0)
+            {
+                strcpy(temp, p[i]);
+                strcpy(p[i], p[j]);
+                strcpy(p[j], temp);
+            }
+        }
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        puts(p[i]);
+    }
+    return 0;
+}
+
+//1170: 最长字符串（指针专题）
+//输入多个字符串，输出最长字符串。要求定义并使用函数maxLenStr()， 
+// void maxLenStr(char *str[], int n, int *max) 
+// { 
+// 从字符串数组str中找出最长的一个字符串，并将其下标存入形参指针max所指内存。 
+// }
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int maxLenStr(char *str[], int n)
+{
+    int i, len, max, maxi;
+    max = strlen(str[0]);
+    maxi = 0;
+    for (i = 1; i <= n; i++)
+    {
+        len = strlen(str[i]);
+        if (len > max)
+        {
+            max = len;
+            maxi = i;
+        }
+	}
+    return maxi;
+}
+int main()
+{
+    char *str[101], ch[4] = {'*', '*', '*', '*'};
+    int max, i, n = 0;
+    for (i = 0; ; i++)
+    {
+        str[i] = (char *)malloc(81 * sizeof(char));
+        gets(str[i]);
+        n++;
+        if (strcmp(str[i], ch) == 0)
+            break;
+    }
+    n = n - 1;
+    max = maxLenStr(str, n);
+    printf("%s\n", str[max]);
+    return 0;
+}
+
+//1171: 加密（指针专题）
+//将一段明文加密。加密的规则如下：将每个字符的ascii码的值减去24作为每个字符加密后的值，例如'a'的ascii码的值为97，那么加密后就变成了73。"73"就是'a'的密文，例如，字符串"abc"，在加密之后变为"737475"，最后，整个密文再进行翻转，得到最终的密文"574737"。现在请你编写程序，对一段文字加密。请定义并使用如下函数： 
+// void encrypt(char *plain, char *cipher) 
+// { 
+// //把原文字符串plain加密后存入字符串cipher 
+// } 
+#include<stdio.h>
+#include<string.h>
+void encrypt(char *plain, char *cipher)
+{
+    int l;
+    l = strlen(plain);
+    int i;
+    for (i = 0; i <= l - 1; i++)
+    {
+        cipher[i] = plain[i] - 24;
+        printf("%d%d", cipher[i] / 10, cipher[i] % 10);
+    }
+	printf("\n");
+}
+int main()
+{
+    char p[200], c[200];
+    gets(p);
+    encrypt(p, c);
+    return 0;
+}
+
+//1172: 矩阵边界和（指针专题）
+//给定一个m行n列的二维矩阵，求其四周边元素和。1<=m、n<=100000，可能是1行100000列，也可能是10000行50列，但保证矩阵元素不多于500000。你可能不能预定义数组的大小了，你要学会使用动态内存分配哦。你可以动态申请m*n个内存单元，然后用一维数组来存储二维数组，二维数组元素a[i][j]对应一维数组a[i*n+j]，i、j均从0开始。
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    int m, n;
+    scanf("%d%d", &m, &n);
+    int *p;
+    int sum = 0;
+    p = (int *)calloc(m * n, sizeof(int));
+    int i, j;
+    for (i = 0; i < m; i++)
+        for (j = 0; j < n; j++)
+        {
+            scanf("%d", &p[i * n + j]);
+        }
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            if ((i == 0) || (j == 0) || (i == m - 1) || (j = n - 1))
+                sum += p[i * n + j];
+        }
+   }
+   printf("%d", sum);
+   free(p);
+   return 0;
+}
+
+//1173: 密码解密（指针专题）
+//有加密当然也有解密啦。那我们来解密吧。已知明文中只有数字和字母，且加密的规则如下：将每个字符的ascii码的值减去24作为每个字符加密过后的密文，例如'a'的ascii码的值为97，那么加密后就变成了73。"73"就是'a'的密文。所以，若密文是“757392”，则解密后的原文是“cat”。现在请你编写程序，将一段密文解密为原文。请定义并使用如下函数 
+// void decrypt(char *cipher, char *plain) 
+// { 
+// //将密文cipher解密后将明文存入plain 
+// } 
+#include<stdio.h>
+#include<string.h>
+void decrypt(char *cipher,char *plain)
+{
+    int i, j = 0;
+    for (i = 0; cipher[i] != '\0'; i = i + 2)
+    {
+        plain[j++] = (cipher[i] - '0') * 10 + (cipher[i + 1] - '0') + 24;
+    }
+    plain[j] = '\0';
+}
+int main()
+{
+    char cipher[200], plain[200];
+    gets(cipher);
+    decrypt(cipher, plain);
+    puts(plain);
+    return 0;
+}
+
+//1174: 长整数排序（指针专题）
+//长整数排序。输入n 然后输入n个位数不超过100位的大整数，输入的整数可能含有前导0。将这n个长整数排序后输出，输出不含前导0。 
+// int greater(char *s1, char *s2) 
+// { 
+// 若s1指向的整数大于s2指向的整数，返回一个正整数; 
+// 若s1指向的整数小于s2指向的整数，返回负整数; 
+// 若s1指向的整数等于s2指向的整数，返回0; 
+// } 
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    int n, b, i, j, k, s[15], flag = 0;
+    char str[15][105], str1[105] = {0};
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%s", str[i]);
+        s[i] = strlen(str[i]);
+        flag = 0;
+        for (j = 0; j < s[i]; j++)
+        {
+            if (str[i][j] != '0')
+                break;
+            if (str[i][j + 1] == '\0')
+                break;
+            else
+            {
+                b = j;
+                flag = 1;
+            }
+        }
+        if (flag == 1)
+        {
+            s[i] = s[i] - b - 1;
+            for (k = 0; k < s[i]; k++)
+                str1[k] = str[i][b + 1 + k];
+            strcpy(str[i], str1);
+        }
+    }
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (s[i] > s[j])
+            {
+                strcpy(str1, str[i]);
+                strcpy(str[i], str[j]);
+                strcpy(str[j], str1);
+            }
+            else if (s[i] == s[j])
+            {
+                for (int k = 0; k < s[i]; k++)
+                {
+                    if (str[i][k] > str[j][k])
+                    {
+                        strcpy(str1, str[i]);
+                        strcpy(str[i], str[j]);
+                        strcpy(str[j], str1);
+                    }
+                }
+            }
+        }
+    }
+    for (i = 0; i < n; i++)
+        printf("%s\n", str[i]);
+    return 0;
+}
+
+//1175: 矩阵转置（指针专题）
+//给定一个m行n列的二维矩阵，输出其转置矩阵。1<=m、n<=100000，可能是1行100000列，也可能是10000行50列。你可能不能预定义数组的大小了，你要学会使用动态内存分配哦。
+#include<stdio.h>
+#include <stdlib.h>
+int main()
+{
+    int i, j, m, n, **a;
+    scanf("%d%d", &m, &n);
+    a = (int **) malloc(sizeof(int *) * m);
+    for (i = 0; i < m; i++)
+        a[i] = (int *)malloc(sizeof(int) * n);
+    for (i = 0; i < m; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+    for (j = 0; j < n; j++)
+    {
+        for (i = 0; i < m; i++)
+            printf("%d ", a[i][j]);
+        printf("\n");
+    }
+    for (i = 0; i < m; i++)
+        free(a[i]);
+    free(a);
+    return 0;
+}
+
+//1176: 查找最大字符串（指针专题）
+//从键盘上输入多个字符串（每个串不超过5个字符且没有空格），用”*****”作为串输入结束的标记。从所输入的若干字符串中，找出一个最大的串，并输出该串。要求最大串的查找通过调用编写的函数实现 
+// void find(char *name[], int n, int *p) 
+// { 
+// //在包含n个字符串的二维字符数组name中，查找值最大的字符串，将其下标存入指针p所指内存单元 
+// } 
+#include<stdio.h>
+#include <string.h>
+#include<stdlib.h>
+void find(char* name[], int n, int* p)
+{
+    int i, imax = 0;
+    char max[10];
+    strcpy(max, name[0]);
+    for (i = 0; i < n; i++)
+    {
+        if (strcmp(max, name[i]) < 0)
+        {
+            strcpy(max, name[i]);
+            imax = i;
+        }
+    }
+    *p = imax;
+}
+int main()
+{
+    int i = 0, f = 0;
+    char *str[20];
+    for(i = 0; ;i++)
+    {
+        str[i] = (char*)malloc(sizeof(char) * 10);
+        scanf("%s", str[i]);
+        if (strcmp(str[i], "*****") == 0)
+            break;
+    }
+    find(str, i, &f);
+    puts(str[f]);
+    free(str[i]);
+    return 0;
+}
+
+//1177: 按要求排序（指针专题）
+//输入n和n个整数，然后按要求排序，若输入1，请输出升序排序序列；若输入2，请输出降序排序序列，若输入3，请输出按绝对值升序排序序列。要求程序结构如下，请完善程序。
+// void sort(int a[], int n, int (*cmp)());
+// int CmpAsc(int x, int y); /*按升序要求判断两元素是否逆序*/
+// int CmpDec(int x, int y); /*按降序要求判断两元素是否逆序*/
+// int CmpAbsAsc(int x, int y);  /*按绝对值升序要求判断两元素是否逆序*/
+// int main(void)
+// {
+//     int a[10],i,n; 
+//     int slt;
+//     /*读入n和n个整数，存入数组a*/
+//     /*读入用户的选择，存入slt; */
+//     switch(slt)
+//     {
+//         case 1:   sort(a, n, CmpAsc); break;
+//         case 2:   sort(a, n, CmpDec); break;
+//         case 3:   sort(a, n, CmpAbsAsc);break;
+//     }
+//     /*输出排序后的数组*/
+//     }
+// void sort(int a[], int n, int (*cmp)())
+// { 
+//     /*对数组a排序，排序原则由cmp指定，若cmp为真，表示两元素逆序*/
+// }
+// int CmpAsc(int x, int y)
+// {
+// //如果x>y返回1，否则返回0； 
+// }
+// int CmpDec(int x, int y)
+// {
+// //如果x<y返回1，否则返回0；
+// }
+// int CmpAbsAsc(int x, int y)
+// {
+// //如果abs(x)>abs(y)返回1，否则返回0
+// //如果abs(x)==abs(y) 且 x>y  返回1，否则返回0
+// }
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+void sort1(int a[], int n, int (*cmp)(int x, int y));
+int CmpAsc(int x, int y);
+int CmpDec(int x, int y);
+int CmpAbsAsc(int x, int y);
+int main()
+{
+    int a[10], i, n;
+    int slt;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    scanf("%d", &slt);
+    switch(slt)
+   {
+     case 1:   sort1(a, n, CmpAsc);
+         break;
+     case 2:   sort1(a, n, CmpDec);
+         break;
+     case 3:   sort1(a, n, CmpAbsAsc);
+         break;
+   }
+   for (i = 0; i < n - 1; i++)
+       printf("%d ", a[i]);
+   printf("%d\n", a[n - 1]);
+   return 0;
+}
+
+void sort1(int a[], int n, int (*cmp)(int x, int y))
+{
+    int t;
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++)
+        {
+            if (cmp(a[i], a[j]))
+            {
+                t = a[i];
+                a[i] = a[j];
+                a[j] = t;
+            }
+		}
+ }
+
+int CmpAsc(int x, int y)
+{
+     if (x > y)
+         return 1;
+     return 0;
+
+}
+int CmpDec(int x, int y)
+{
+    if (x < y)
+        return 1;
+    return 0;
+ }
+int CmpAbsAsc(int x, int y)
+{
+    if (abs(x) > abs(y))
+        return 1;
+    if (abs(x) == abs(y) && x > y)
+        return 1;
+	return 0;
+}
+
+//1178: 单词数(多实例)
+//统计一篇文章里不同单词的总数。
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char a[30000], b[1000][31];
+    int n, i, j, k, l;
+    while (gets(a), strcmp(a, "#") != 0)
+    {
+        n = 0;
+        l = strlen(a);
+        for (i = 0; i < l; i++)
+        {
+            if (a[i] == ' ')
+                continue;
+            else
+			{
+                for (j = 0; a[i] != ' ' && i < l; j++)
+                    b[n][j] = a[i++];
+                b[n][j] = '\0';
+                n++;
+            }
+		}
+        k = n;
+        for (i = 0; i < k - 1; i++)
+            for (j = i + 1; j < k; j++)
+            {
+                if (strcmp(b[i], b[j]) == 0 && b[i][0] != '\0')
+                {
+                    b[i][0] = '\0';
+                    n--;
+                }
+			}
+        printf("%d\n", n);
+        while (k--)
+            b[k][0] = '\0';
+    }
+	return 0;
+}
+
+//1179: 带参宏定义(函数专题）
+//从键盘输入三个字符，用空格隔开，使用带参宏定义1中SWAP，将三个字符按从大到小的顺序排序输出。 宏定义1：#define SWAP(a, b, t) { t=a; a=b; b=t; } 请尝试，如果用宏定义2中的SWAP，主函数需要如何修改才能得到正确结果？ 宏定义2：#define SWAP(a, b, t) t=a; a=b; b=t; 
+#include<stdio.h>
+#define SWAP(a, b, t) t=a; a=b; b=t;
+ int main()
+{
+    char a, b, c, t, i;
+    scanf("%c %c %c", &a, &b, &c);
+    for (i = 0; i < 3; i++)
+    {
+        if (a < b)
+        {
+            {
+                SWAP(a, b, t);
+            }
+        }
+        else if (b < c)
+        {
+            {
+                SWAP(b, c, t);
+            }
+        }
+        else if (a < c)
+        {
+            {
+                SWAP(a, c, t);
+            }
+        }
+    }
+    printf("%c %c %c\n", a, b, c);
+    return 0;
+}
+
+//1180: 成绩统计（结构体专题）
+//从键盘输入若干个学生的信息，每个学生信息包括学号、姓名、3门课的成绩，计算每个学生的总分，输出总分最高的学生的信息。
+#include<stdio.h>
+struct students 
+{
+	char xh[20];
+	char name[20];
+	int a;
+	int b;
+	int c;
+};
+int main()
+{
+	int n, i, max = 0;
+	struct students a[100];
+	int s[100];
+    scanf("%d", &n);
+	for (i = 0; i < n; i++)
+	{
+		scanf("%s%s%d%d%d", a[i].xh, a[i].name, &a[i].a, &a[i].b, &a[i].c);
+		s[i] = a[i].a + a[i].b + a[i].c;
+		if (s[i] > s[max])
+			max = i;
+	}
+	printf("%s %s %d %d %d", a[max].xh, a[max].name, a[max].a, a[max].b, a[max].c);
+	return 0;
+}
+
+//1181: 谁的年龄最小（结构体专题）
+//设计一个结构体类型，包含姓名、出生日期。其中出生日期又包含年、月、日三部分信息。输入n个好友的信息，输出年龄最小的好友的姓名和出生日期。
+#include<stdio.h>
+struct students
+{
+    char name[20];
+    int year;
+    int month;
+    int day;
+};
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    struct students a[100];
+    int min = 0;
+    for (int i = 0; i< n ; i++)
+    {
+        scanf("%s %d %d %d", a[i].name, &a[i].year, &a[i].month, &a[i].day);
+        if (a[min].year < a[i].year)
+            min = i;
+        else if (a[min].year == a[i].year)
+        {
+            if (a[min].month < a[i].month)
+                min = i;
+            else if (a[min].month == a[i].month)
+                if (a[min].day < a[i].day)
+                    min = i;
+        }
+    }
+    printf("%s %d-%02d-%02d", a[min].name, a[min].year, a[min].month, a[min].day);
+    return 0;
+}
+
+//

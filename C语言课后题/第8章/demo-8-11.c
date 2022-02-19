@@ -4,9 +4,9 @@ void reverse(char *str)
 {
 	int left = 0, right, len = strlen(str), i, j;
 	char t;
-	if(*str=='-')
-	    left = 1;
-    for (i = len - 1; i >= 0; i--)
+	if (*str == '-')
+		left = 1;
+  	for (i = len - 1; i >= 0; i--)
     {
         if(*(str + i) != '0')
         {
@@ -23,7 +23,7 @@ void reverse(char *str)
 }
 int main()
 {
-	char str[100];
+	char str[101];
 	gets(str);
 	reverse(str);
 	puts(str);

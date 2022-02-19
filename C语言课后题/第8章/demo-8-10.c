@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<string.h>
-int main(void)
+int main()
 {
     char a[100];
     int i, len, point, n, k = 1;

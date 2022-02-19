@@ -26,6 +26,6 @@ int main()
                     min = i;
         }
     }
-    printf("%s %d %d %d", a[min].name, a[min].year, a[min].month, a[min].day);
+    printf("%s %d-%02d-%02d", a[min].name, a[min].year, a[min].month, a[min].day);
     return 0;
 }
