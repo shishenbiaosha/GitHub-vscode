@@ -1,7 +1,7 @@
 #include<stdio.h>
 struct xingxing
 {
-	int x,y;
+	int x, y;
 };
 int main()
 {

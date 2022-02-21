@@ -4775,4 +4775,826 @@ int main()
     return 0;
 }
 
-//
+//1182: 按出生日期排序（结构体专题）
+//送人玫瑰手有余香，小明希望自己能带给他人快乐，于是小明在每个好友生日的时候发去一份生日祝福。小明希望将自己的通讯录按好友的生日排序排序，这样就查看起来方便多了，也避免错过好友的生日。为了小明的美好愿望，你帮帮他吧。小明的好友信息包含姓名、出生日期。其中出生日期又包含年、月、日三部分信息。输入n个好友的信息，按生日的月份和日期升序输出所有好友信息。
+#include<stdio.h>
+typedef struct birthday 
+{
+    char name[20];
+    int year, month, day;
+}day;
+int main()
+{
+    day a[10], t;
+    int n, i, j;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%s%d%d%d", a[i].name, &a[i].year, &a[i].month, &a[i].day);
+    }
+    for (i = 0; i < n - 1; i++)
+        for (j = i + 1; j < n; j++)
+        {
+            if (a[i].month > a[j].month)
+            {
+                t = a[i];
+                a[i] = a[j];
+                a[j] = t;
+            }
+            else if (a[i].month == a[j].month && a[i].day > a[j].day)
+            {
+                t = a[i];
+                a[i] = a[j];
+                a[j] = t;
+            }
+		}
+    for (i = 0; i < n; i++)
+        printf("%s %d-%02d-%02d\n", a[i].name, a[i].year, a[i].month, a[i].day);
+    return 0;
+}
+
+//1183: 平面点排序（一）（结构体专题）
+//平面上有n个点，坐标均为整数。请按与坐标原点（0,0）距离的远近将所有点排序输出。可以自己写排序函数，也可以用qsort库函数排序。
+#include <stdio.h>
+typedef struct point
+{
+    int x;
+    int y;
+    int dist;
+} stu;
+int main() 
+{
+    int n, i, j;
+    stu a[15], t;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d%d", &a[i].x, &a[i].y);
+        a[i].dist = a[i].x * a[i].x + a[i].y * a[i].y;
+    }
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (a[i].dist > a[j].dist)
+            {
+                t = a[i];
+                a[i] = a[j];
+				a[j] = t;
+            }
+        }
+    }
+    for (i = 0; i < n; i++)
+    {
+        printf("(%d,%d) ", a[i].x, a[i].y);
+    }
+    return 0;
+}
+
+//1184: 平面点排序（二）（结构体专题）
+//平面上有n个点，坐标均为整数。横坐标相同时按纵坐标排序，否则按横坐标排序。本题要求用结构体存储坐标，再进行排序。先升序排序输出，再降序排序输出，可以自己写排序函数，也可以用qsort库函数排序。
+#include <stdio.h>
+typedef struct Point
+{
+    int x;
+    int y;
+    int point;
+} P;
+int main()
+{
+    P p[102], temp;
+    int n;
+    int i, j;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d%d", &p[i].x, &p[i].y);
+        p[i].point = p[i].x * p[i].x + p[i].y * +p[i].y;
+    }
+    for (i = 0; i < n; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (p[i].x > p[j].x)
+            {
+                temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
+            else if (p[i].x == p[j].x)
+            {
+                if (p[i].y > p[j].y)
+                {
+                    temp = p[i];
+                    p[i] = p[j];
+                    p[j] = temp;
+                }
+            }
+        }
+    }
+    for (i = 0; i < n; i++)
+    {
+        printf("(%d,%d) ", p[i].x, p[i].y);
+    }
+
+    printf("\n");
+    for (i = n - 1; i >= 0; i--)
+    {
+        printf("(%d,%d) ", p[i].x, p[i].y);
+    }
+    printf("\n");
+    return 0;
+}
+
+//1185: 数星星（结构体专题）
+//一天，小明坐在院子里数星星，Gardon就出了个难题给她：Gardon在天空画出了一个矩形区域，让他输入矩形区域里有多少颗星星，仁慈的上帝还为他标出了每个星星的坐标。但小明数着数着就看花了眼，但他的原则是：宁愿多数一次，不可错过一个。如果小明把他数过的星星的坐标都告诉你，你能否帮他进行排重处理（如果两个星星的坐标位置相同，则视为一个星星），计算出星星的个数。
+#include<stdio.h>
+struct xingxing
+{
+	int x, y;
+};
+int main()
+{
+	struct xingxing a[300];
+	int n, i, j, sum = 0;
+	scanf("%d", &n);
+	for (i = 0; i < n; i++)
+	{
+		scanf("%d%d", &a[i].x, &a[i].y);
+		for (j = 0; j < i; j++)
+		{
+			if (a[i].x == a[j].x && a[i].y == a[j].y)
+				break;
+		}
+		if (j == i)
+			sum++;
+	}
+	printf("%d\n", sum);
+	return 0;
+}
+
+//1186: 奖学金（结构体专题）
+//某校发放奖学金共5种，获取条件各不同： 1.阳明奖学金，每人8000，期末平均成绩>80，且在本学期发表论文大于等于1篇； 2.梨洲奖学金，每人4000，期末平均成绩>85，且班级评议成绩>80； 3.成绩优秀奖，每人2000，期末平均成绩>90； 4.西部奖学金，每人1000，期末平均成绩>85的西部省份学生； 5.班级贡献奖，每人850，班级评议成绩>80的学生干部。 只要符合条件就可以得奖，一人可兼得多项奖学金。例：某生，期末平均成绩87，班级评议成绩82，且是学生干部，则可同时获得梨洲奖学金和班级贡献奖，奖金总数4850。现给出若干学生的姓名、期末平均成绩、班级评议成绩、是否学生干部、是否西部省份学生、发表论文数。计算哪个同学获得的奖金总数最高？有多个最高值则输出第一个出现的。
+#include <stdio.h>
+typedef struct student
+{
+    char name[20];
+    int Last_Score;
+    int Class_Score;
+    char Stu_leader;
+    char w_stu;
+    int article;
+    int sum;
+
+} STU;
+int main()
+{
+    int n;
+    STU p[11];
+    int flag = 0;
+    int sum = 0;
+    int max = 0;
+    scanf("%d", &n);
+    int i;
+    for (i = 0; i < n; i++)
+    {
+        scanf("%s%d%d %c %c %d", p[i].name, &p[i].Last_Score, &p[i].Class_Score, &p[i].Stu_leader, &p[i].w_stu, &p[i].article);
+        p[i].sum = 0;
+    }
+    for (i = 0; i < n; i++)
+    {
+        if (p[i].Last_Score > 80 && p[i].article >= 1)
+            p[i].sum += 8000;
+        if (p[i].Last_Score > 85 && p[i].Class_Score > 80)
+            p[i].sum += 4000;
+        if (p[i].Last_Score > 90)
+            p[i].sum += 2000;
+        if (p[i].Last_Score > 85 && p[i].w_stu == 'Y')
+            p[i].sum += 1000;
+        if (p[i].Class_Score > 80 && p[i].Stu_leader == 'Y')
+            p[i].sum += 850;
+        sum += p[i].sum;
+    }
+    for (i = 0; i < n; i++)
+    {
+        if (p[i].sum > max)
+        {
+            max = p[i].sum;
+            flag = i;
+        }
+    }
+    printf("%s\n", p[flag].name);
+    printf("%d\n", p[flag].sum);
+    printf("%d\n", sum);
+    return 0;
+}
+
+//1187: 棒棒糖（结构体专题）
+//新年快到了，计算机学院新年晚会正在筹备中，今年有一个新创意：来参加晚会的所有学生都有礼物（一根棒棒糖）。老师把买棒棒糖的任务交给小明了，并指定了要买的棒棒糖的品牌和品种。俗话说得好，货比三家不吃亏。小明来到了商店，看了各个店铺里这种棒棒糖的价格，不仅如此，他还记住了每个店铺的存货量。已知小明打算购买n根棒棒糖，问他最少要花多少钱？
+#include <stdio.h>
+typedef struct bbt
+{
+    double price;
+    int num;
+} BBT;
+int main()
+{
+    BBT p[12], temp;
+    int n, m;
+    scanf("%d", &n);
+    scanf("%d", &m);
+    int i, j;
+    double sum = 0.0;
+    for (i = 0; i < m; i++)
+        scanf("%lf%d", &p[i].price, &p[i].num);
+    for (i = 0; i < m; i++)
+    {
+        for (j = i + 1; j < m; j++)
+        {
+            if (p[i].price > p[j].price)
+            {
+                temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
+        }
+   }
+   for (i = 0; i < m; i++)
+   {
+       if (p[i].num >= n)
+       {
+           sum = p[i].price * n + sum;
+           break;
+       }
+       else
+       {
+           sum = p[i].num * p[i].price + sum;
+           n = n - p[i].num;
+       }
+   }
+   printf("%.2f\n", sum);
+   return 0;
+}
+
+//1188: 选票统计（一）（结构体专题）
+//某单位进行选举，有5位候选人：zhang、wang、zhao、liu、miao。编写程序，统计每人所得的票数。要求每人的信息里包括两部分：name和votes，分别描述姓名和所得票数。每个人的信息用一个结构体来表示，5个人的信息使用结构体数组。
+#include<stdio.h>
+#include<string.h>
+struct person
+{
+	char name[10];
+	int vote;
+};
+int main()
+{
+	int i, j, n;
+	char iname[10];
+	struct person v[5]={ {"zhang",0} , {"wang",0} , {"zhao",0} , {"liu",0} , {"miao",0} };
+	scanf("%d", &n);
+	for (i = 0; i < n; i++)
+	{
+		scanf("%s", iname);
+		for (j = 0; j < 5; j++)
+		{
+			if (strcmp(v[j].name, iname) == 0)
+			{
+				v[j].vote += 1;
+			}
+		}
+	}
+	for (i = 0; i < 5; i++)
+	{
+		printf("%s %d\n", v[i].name, v[i].vote);
+	}
+	return 0;
+}
+
+//1189: 选票统计（二）（结构体专题）
+//计算机与通信工程学院2012届学生会主席投票选举工作定于1月6日在电教楼前隆重举行。本次投票将采用电脑统计选票的方式，当投票选举正式开始后，同学们将排队一一走到电脑前，投上自己神圣的一票：在电脑前输入一个姓名，然后输入回车表示确认。 当所同学投票结束，工作人员只需要输入一个”#”并回车确认，表示投票结束，电脑立即显示出得票最高的同学姓名，该同学将当选为新一届计算机与通信工程学院学生会主席。 选举大会的准备工作正在紧张进行，编程统计投票的工作就交给你了。
+#include <stdio.h>
+typedef struct vote
+{
+    char name[20];
+    int votes;
+} VOTE;
+int main()
+{
+    int i = 0, j = 0;
+    int max = 0;
+    VOTE p[501];
+    for (i = 0; i < 501; i++)
+        p[i].votes = 0;
+    char ch[20];
+    while (scanf("%s", ch) && ch[0] != '#')
+    {
+        int count = 0;
+        for (i = 0; i < j; i++)
+        {
+            if (strcmp(ch, p[i].name) == 0)
+            {
+                p[i].votes++;
+                count = 1;
+                break;
+            }
+        }
+        if (count == 0)
+        {
+            strcpy(p[j++].name, ch);
+        }
+ 
+    }
+    for (i = 1; i < j; i++)
+    {
+        if (p[i].votes > p[max].votes)
+            max = i;
+    }
+    printf("%s\n", p[max].name);
+    return 0;
+}
+
+//1190: 查询记录（结构体专题）
+//有一学生成绩表，包括学号、姓名、3门课程成绩。请实现如下查找功能：输入一个学生的学号，输出该学生学号、姓名、3门课程成绩 
+#include<stdio.h>
+struct STU
+{
+    char id[15];
+    char name[25];
+    int a, b, c;
+} p[110];
+char fid[15];
+int main()
+{
+    int n, i, j;
+    while (~scanf("%d", &n))
+    {
+        int flag = 0;
+        for (i = 0; i < n; i++)
+            scanf("%s%s%d%d%d", p[i].id, p[i].name, &p[i].a, &p[i].b, &p[i].c);
+        scanf("%s", fid);
+        for (i = 0; i < n; i++)
+        {
+            if (strcmp(fid, p[i].id) == 0)
+            {
+                j = i;
+                flag = 1;
+                break;
+            }
+		}
+        if (flag)
+            printf("%s %s %d %d %d\n", p[j].id, p[j].name, p[j].a, p[j].b, p[j].c);
+        else
+            printf("Not Found\n");
+    }
+    return 0;
+}
+
+//1191: 添加记录（结构体专题）
+//有一学生成绩表，包括学号、姓名、3门课程成绩。已知该成绩表按学号升序排序。请编程实现，添加一个新的学生信息，且使成绩表仍按学号有序；若待添加的学号与已有学号重复，则输出错误信息，拒绝添加。
+#include<stdio.h>
+#define swap(a,b,t){t=a;a=b;b=t;}
+typedef struct student
+{
+    long long int ID;
+    char name[20];
+    int a, b, c;
+} STU;
+int main()
+{
+    STU stu[100], stu1, t;
+    int n, j, i;
+    int flag = 0;
+    scanf("%d", &n);
+    for (i = 0; i < n; i++)
+        scanf("%lld %s %d %d %d", &stu[i].ID, stu[i].name, &stu[i].a, &stu[i].b, &stu[i].c);
+    scanf("%lld %s %d %d %d", &stu1.ID, stu1.name, &stu1.a, &stu1.b, &stu1.c);
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (stu[i].ID > stu[j].ID)
+                swap(stu[i], stu[j], t);
+        }
+		}
+
+        for (i = 0; i < n; i++)
+        {
+            if (stu[i].ID == stu1.ID)
+            {
+                flag = 1;
+                printf("error!");
+                break;
+            }
+			else
+        	{
+                if (stu[i].ID < stu1.ID)
+                    j = i;
+                if (stu1.ID < stu[0].ID)
+                {
+                    swap(stu1, stu[0], t);
+                    j = i;
+                }
+        	}
+		}
+
+        if (n == 1)
+        {
+            flag = 1;
+            if (stu[0].ID == stu1.ID && flag == 0)
+                printf("error!");
+            else if (stu[0].ID < stu1.ID)
+            {
+                printf("%lld %s %d %d %d\n", stu[0].ID, stu[0].name, stu[0].a, stu[0].b, stu[0].c);
+                printf("%lld %s %d %d %d\n", stu1.ID, stu1.name, stu1.a, stu1.b, stu1.c);
+            }
+            else if (stu[0].ID > stu1.ID)
+            {
+                swap(stu[0], stu1, t);
+                printf("%lld %s %d %d %d\n", stu[0].ID, stu[0].name, stu[0].a, stu[0].b, stu[0].c);
+                printf("%lld %s %d %d %d\n", stu1.ID, stu1.name, stu1.a, stu1.b, stu1.c);
+            }
+	}
+    if (flag == 0)
+    {
+        for (i = 0; i < n; i++)
+        {
+            if (i != j)
+                printf("%lld %s %d %d %d\n", stu[i].ID, stu[i].name, stu[i].a, stu[i].b, stu[i].c);
+            else
+			{
+                printf("%lld %s %d %d %d\n", stu[i].ID, stu[i].name, stu[i].a, stu[i].b, stu[i].c);
+                printf("%lld %s %d %d %d\n", stu1.ID, stu1.name, stu1.a, stu1.b, stu1.c);
+            }
+		}
+	}	
+	return 0; 
+}
+
+//1192: 删除记录（结构体专题）
+//有一学生成绩表，包括学号、姓名、3门课程成绩。请实现如下删除功能：输入一个学生的学号，删除该学生的所有信息。
+#include<stdio.h>
+struct STU
+{
+    char id[15];
+    char name[25];
+    int a, b, c;
+} p[110];
+char fid[15];
+int main()
+{
+    int n, i, j;
+    while (~scanf("%d", &n))
+    {
+        int flag = 0;
+        for (i = 0; i < n; i++)
+            scanf("%s%s%d%d%d", p[i].id, p[i].name, &p[i].a, &p[i].b, &p[i].c);
+        scanf("%s", fid);
+        for (i = 0; i < n; i++)
+        {
+            if (strcmp(fid, p[i].id) == 0)
+            {
+                j = i;
+                flag = 1;
+                break;
+            }
+		}
+        if (flag)
+        {
+            for (i = 0; i < n; i++)
+            {
+                if (i == j)
+                    continue;
+                printf("%s %s %d %d %d\n", p[i].id, p[i].name, p[i].a, p[i].b, p[i].c);
+            }
+		}
+		else
+            printf("error!\n");
+    }
+	return 0;
+}
+
+//1193: 单科成绩排序（结构体专题）
+//有一学生成绩表，包括学号、姓名、3门课程成绩。请按要求排序输出：若输入1，则按第1门课成绩降序输出成绩表，若输入为i（1<=i<=3)，则按第i门课成绩降序输出成绩表。
+#include<stdio.h>
+typedef struct head
+{
+    char num[13];
+    char name[25];
+    int a[3];
+} h;
+void swap(h *a, h *b)
+{
+    h t;
+    t = *a, *a = *b, *b = t;
+}
+void sort(h b[], int s, int n)
+{
+    for (int i = 0; i < n; i++)
+        for (int k = i; k < n; k++)
+        {
+            if (b[i].a[s] < b[k].a[s])
+                swap(&b[i], &b[k]);
+            else if (b[i].a[s] == b[k].a[s])
+                if (strcmp(b[i].num, b[k].num) > 0)
+                    swap(&b[i], &b[k]);
+        }
+}
+int main()
+{
+    h b[100] = {0};
+    int n, k;
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++)
+        scanf("%s %s %d %d %d", b[i].num, b[i].name, &b[i].a[0], &b[i].a[1], &b[i].a[2]);
+    scanf("%d", &k);
+    k--;
+    sort(b, k, n);
+    for (int i = 0; i < n; i++)
+        printf("%s %s %d %d %d\n", b[i].num, b[i].name, b[i].a[0], b[i].a[1], b[i].a[2]);
+    return 0;
+}
+
+//1194: 总成绩排序（结构体专题）
+//有一学生成绩表，包括学号、姓名、3门课程成绩。请按如下规则排序：按总成绩降序排序；若总成绩相同，则按姓名升序排序；若姓名相同，则按学号升序排序。
+#include<stdio.h>
+typedef struct student
+{
+    char no[13];
+    char name[21];
+    int a;
+	int b;
+	int c;
+	int sum;
+} student;
+void swap(student *x, student *y)
+{
+    student *t;
+    t = (student *)malloc(sizeof(student));
+    *t = *x;
+    *x = *y;
+    *y = *t;
+}
+int main()
+{
+    int t, i, j;
+    student *stu;
+    scanf("%d", &t);
+    getchar();
+    stu = (student *)malloc(sizeof(student) * t);
+    for (i = 0; i < t; i++)
+    {
+        scanf("%s %s %d %d %d", stu[i].no, stu[i].name, &stu[i].a, &stu[i].b, &stu[i].c);
+        stu[i].sum = stu[i].a + stu[i].b + stu[i].c;
+    }
+    for (i = 1; i < t; i++)
+    {
+        for (j = 0; j < t - i; j++)
+        {
+            if (stu[j].sum < stu[j + 1].sum) //比较总分数
+                swap(&stu[j], &stu[j + 1]);
+            else if (stu[j].sum == stu[j + 1].sum)
+            {
+                if (strcmp(stu[j].name, stu[j + 1].name) > 0)
+                    swap(&stu[j], &stu[j + 1]);
+            }
+        }
+    }
+    for (i = 0; i < t; i++)
+    {
+        printf("%s %s %d %d %d %d\n", stu[i].no, stu[i].name, stu[i].a, stu[i].b, stu[i].c, stu[i].sum);
+    }
+    return 0;
+}
+
+//1195: 猴子选大王（结构体专题）
+//n只猴子围坐成一个圈，按顺时针方向从1到n编号。然后从1号猴子开始沿顺时针方向从1开始报数，报到m的猴子出局，再从刚出局猴子的下一个位置重新开始报数，如此重复，直至剩下一个猴子，它就是大王。
+#include<stdio.h>
+#define N 110
+typedef struct monkey
+{
+    int n;
+} MK;
+void xunhuan(struct monkey p[], int m);
+void del(MK p[], int i, int m);
+int main()
+{
+    MK p[N];
+    int m, n;
+    scanf("%d%d", &m, &n);
+    int i;
+    for (i = 1; i <= m; i++)
+        p[i].n = i;
+    while (m != 1)
+    {
+        for (i = 1; i < n; i++)
+            xunhuan(p, m);
+        del(p, 1, m--);
+    }
+    printf("%d", p[1].n);
+    return 0;
+}
+void xunhuan(MK p[], int m)
+{
+    MK T;
+    T = p[1];
+    int i;
+    for (i = 1; i < m; i++)
+        p[i] = p[i + 1];
+    p[m] = T;
+}
+void del(MK p[], int i, int m)
+{
+    int k;
+    for (k = i; k < m; k++)
+        p[k] = p[k + 1];
+}
+
+//1196: 数星星（二）（结构体专题）
+//一天，小明坐在院子里数星星，Gardon就出了个难题给他，让他数数天上的星星最多有多少个是在同一条直线上的。天上的星星太多了，小明马上就看花了眼，你能写个程序来帮他计算么？
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define N 301
+typedef struct point
+{
+    double x;
+    double y;
+} point;
+int main()
+{
+    int n, h = 0, a[45000] = {0}, max = 0;
+    point p[N];
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%lf %lf", &p[i].x, &p[i].y);
+    }
+    if (n == 1)
+    {
+        printf("1\n");
+        return 0;
+    }
+    if (n == 2)
+    {
+        printf("2\n");
+        return 0;
+    }
+    for (int i = 0; i < n - 2; i++)
+    {
+        for (int j = i + 1; j < n - 1; j++)
+        {
+            for (int k = j + 1; k < n; k++)
+            {
+                if ((p[k].y - p[i].y) * (p[k].x - p[j].x) - (p[k].x - p[i].x) * (p[k].y - p[j].y) == 0)
+                    a[h]++;
+            }
+            h++;
+        }
+    }
+    for (int i = 0; i < h; i++)
+    {
+        if(a[i]>max)
+            max = a[i];
+    }
+    printf("%d\n", max + 2);
+    return 0;
+}
+
+//1197: 考试排名（一）（结构体专题）
+//今天浙大研究生复试的上机考试跟传统笔试的打分规则相似，总共有n道题，每道题有对应分值，最后计算总成绩。现给定录取分数线，请你写程序找出最后通过分数线的考生，并将他们的成绩按降序打印。
+#include<stdio.h>
+#include<string.h>
+struct score
+{
+    char name[20];
+    int n;
+    int arr[10];
+    int s;
+};
+int main()
+{
+    int b[10], m, i, j, c, d = 0, z;
+    struct score a[100], t;
+    scanf("%d%d%d", &m, &c, &z);
+    for (i = 0; i < c; i++)
+    {
+        scanf("%d", &b[i]);
+    }
+    for (i = 0; i < m; i++)
+    {
+        a[i].s = 0;
+        scanf("%s%d", &a[i].name, &a[i].n);
+        for (j = 0; j < a[i].n; j++)
+        {
+            scanf("%d", &a[i].arr[j]);
+        }
+    }
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < a[i].n; j++)
+        {
+            a[i].s += b[a[i].arr[j] - 1];
+        }
+    }
+    for (i = 1; i <= m; i++)
+    {
+        for (j = 0; j < m - i; j++)
+        {
+            if (a[j].s < a[j + 1].s)
+            {
+                t = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = t;
+            }
+            else if (a[j].s == a[j + 1].s && strcmp(a[j].name, a[j + 1].name) > 0)
+            {
+                t = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = t;
+            }
+        }
+    }
+    for (i = 0; i < m; i++)
+    {
+        if (a[i].s >= z)
+            d++;
+    }
+    printf("%d\n", d);
+    for (i = 0; i < m; i++)
+    {
+        if (a[i].s >= z)
+            printf("%s %d\n", a[i].name, a[i].s);
+    }
+    return 0;
+}
+
+//1198: 考试排名（二）(结构体专题)
+//ACM 国际大学生程序设计竞赛，英文全称：ACM International Collegiate Programming Contest（ACM-ICPC 或 ICPC）是由美国计算机协会（ACM）主办的，一项旨在展示大学生创新能力、团队精神和在压力下编写程序、分析和解决问题能力的年度竞赛。经过30多年的发展，ACM 国际大学生程序设计竞赛已经发展成为最具影响力的大学生计算机竞赛。一般就简称为 ACM 竞赛了（虽然照理来说应该简称成 ICPC 才对）。 ACM 竞赛的计分规则如下： 首先按照过题数排名，过题数相同的队伍按照罚时排名（罚时小的队伍排在前面），如果罚时也相同则认为名次相同（名次相同时在排名表上队伍 id 较小的队伍列在前面）。 对于罚时的计算。队伍总体的罚时等于该队各题的罚时之和。对于某题的罚时，如果这道题最后没有通过（没有正确提交），则这题的罚时为 0，否则这道题的罚时为：从比赛开始到该题第一次正确提交经过的时间 + 第一次通过之前的错误提交次数 * 20 分钟。 例如：某次考试一共8题（A，B，C，D，E，F，G，H），每个人做的题都在对应的题号下有个数量标记，负数表示该学生在该题上有过的错误提交次数，但到现在还没有AC，正数表示AC所耗的时间，如果正数a跟上一对括号，里面有个整数b，那就表示该学生提交该题AC了，耗去了时间a，同时，曾经错误提交了b次，因此对于下述输入数据：则其排名从高到低应该是这样的： Josephus 5 376 John 4 284 Alice 4 352 Smith 3 167 Bob 2 325 Bush 0 0
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef struct student
+{
+    char name[21];
+    int ss;
+    int num[11];
+    int sum;
+} student;
+void swap(student *x, student *y)
+{
+    student *t;
+    t = (student *)malloc(sizeof(student));
+    *t = *x;
+    *x = *y;
+    *y = *t;
+}
+int main()
+{
+    int i, j, n, m, g, *a;
+    student *stu, t;
+    scanf("%d %d %d", &n, &m, &g);
+    a = (int *)malloc(sizeof(int) * (m + 1));
+    stu = (student *)malloc(sizeof(student) * n);
+    for (i = 1; i <= m; i++)
+        scanf("%d", &a[i]);
+    getchar();
+    for (i = 0; i < n; i++)
+    {
+        scanf("%s %d", stu[i].name, &stu[i].ss);
+        stu[i].sum = 0;
+        for (j = 0; j < stu[i].ss; j++)
+        {
+            scanf("%d", &stu[i].num[j]);
+            stu[i].sum += a[stu[i].num[j]];
+        }
+    }
+    for (i = 1; i < n; i++)
+    {
+        for (j = 0; j < n - i; j++)
+        {
+            if (stu[j].sum < stu[j + 1].sum)
+                swap(&stu[j], &stu[j + 1]);
+            else if (stu[j].sum == stu[j + 1].sum)
+            {
+                if (strcmp(stu[j].name, stu[j + 1].name) > 0)
+                    swap(&stu[j], &stu[j + 1]);
+            }
+        }
+    }
+    int cnt = 0;
+    for (i = 0; i < n; i++)
+    {
+        if (stu[i].sum >= g)
+            cnt++;
+    }
+    printf("%d\n", cnt);
+    for (i = 0; i < n; i++)
+        if (stu[i].sum >= g)
+            printf("%s %d\n", stu[i].name, stu[i].sum);
+    return 0;
+}
+
+//1199: 多项式相加（多实例）
+//一个多项式可以表达为x的各次幂与系数乘积的和，比如：2x6+3x5+12x3+6x+20现在，你的程序要读入两个多项式，然后输出这两个多项式的和，也就是把对应的幂上的系数相加然后输出。程序要处理的幂最大为100。
+
+//1200: 平均数计算
+//当我们用平均数来表示一个数据的“集中趋势”时，如果数据中出现一、两个极端数据，那么平均数对于这组数据所的代表作用就会削弱，为了消除这种现象，可将少数极端数据去掉，只计算余下的数据的平均数，并把所得的结果作全部数据的平均数。所以，在评定文艺与体育比赛的成绩时，常常采用在评分数据中分别去掉一个最高分和一个最低分，再计算其中平均分的办法，以避免极端数据造成的不良影响。现有5个整数，能不能用上述的规则计算这五个数的平均数呢？

@@ -1,4 +1,4 @@
-#include  <stdio.h>
+#include<stdio.h>
 //数学思路来自网络
 int monkey(int n, int m)
 {
