@@ -1,4 +1,4 @@
-//ÊµÏÖÕıÏÒº¯Êı
+//å®ç°æ­£å¼¦å‡½æ•°
 #include<stdio.h>
 int main()
 {
@@ -16,7 +16,7 @@ int main()
 	return 0;
 }
 
-//ËØÊıÅĞ¶¨
+//ç´ æ•°åˆ¤å®š
 #include<stdio.h>
 int main()
 {
@@ -34,7 +34,7 @@ int main()
 	return 0;
 }
 
-//Çó½â×î´ó¹«Ô¼Êı
+//æ±‚è§£æœ€å¤§å…¬çº¦æ•°
 #include<stdio.h>
 int main()
 {
@@ -51,7 +51,7 @@ int main()
 	return 0;
 }
 
-//ÇóËØÊı
+//æ±‚ç´ æ•°
 #include<stdio.h>
 int prime(int n);
 int main()
@@ -81,7 +81,7 @@ int prime(int n)
 		return 0;
 }
 
-//ÔªÒôÍ³¼Æ
+//å…ƒéŸ³ç»Ÿè®¡
 #include<stdio.h>
 int count = 0;
 int vowel(char ch);
@@ -109,7 +109,7 @@ int vowel(char ch)
 		return 0;
 }
 
-//·Ö½âÖÊÒò×Ó
+//åˆ†è§£è´¨å› å­
 #include<stdio.h>
 int main()
 {
@@ -127,8 +127,8 @@ int main()
 	return 0;
 }
 
-//Êä³ö×Ô¶¨ÒåÁ½ÊıÖ®¼äµÄË®ÏÉ»¨Êı    
-//ÓĞÎÊÌâÎ´½â¾ö
+//è¾“å‡ºè‡ªå®šä¹‰ä¸¤æ•°ä¹‹é—´çš„æ°´ä»™èŠ±æ•°    
+//æœ‰é—®é¢˜æœªè§£å†³
 #include<stdio.h>
 int flower(int num);
 int main()
@@ -162,7 +162,7 @@ int flower(int num)
 		return 0;
 }
 
-//µ÷ÓÃº¯Êı»­Í¼
+//è°ƒç”¨å‡½æ•°ç”»å›¾
 //copy
 #include <stdio.h>
 void printblank(int i, int n);
