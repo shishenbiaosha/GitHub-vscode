@@ -3,8 +3,8 @@ Str = input("请输入一串字符:")
 resoult = {}  # 定义一个空字典
 for i in Str:  # 遍历输入的字符串，以键值对的方式存储在字典中
     resoult[i] = Str.count(i)  
-for key in resoult:  # 遍历字典，格式化输出结果
-    print(f'"{key}":{resoult[key]}次')
+for key, value in resoult.items():  # 遍历字典，格式化输出结果
+    print(key, value, sep = ':')
 
 # 2.编写程序，计算下列分段函数y=f(x)的值。
 # y=-x+2.5; 0 <= x < 5
@@ -175,3 +175,10 @@ for i in range(20):
         list[i] = list_Ou[count]
         count += 1
 print(list)
+
+import random
+ls = [random.randint(1, 100) for i in range(20)]
+print('生成列表：', ls)
+ls[::2] = sorted(ls[::2], reverse=True)
+print('排序后：', ls)
+
