@@ -123,6 +123,12 @@ if str == "n":
 print(price)
 
 # 11.现在有一个文件price.csv，内容如下，读入该文件，然后把再写入到priceout.csv中，格式不变。
+# 城市,环比,同比,定基
+# 北京,101.5,120.7,121.4
+# 上海,101.2,127.3,127.8
+# 广州,101.3,119.4,120
+# 深圳,102,140.9,145.5
+# 沈阳,100.1,101.4,101.6
 import csv
 list = []
 with open('price.csv', 'r', encoding = 'UTF-8') as fp:
@@ -181,4 +187,3 @@ ls = [random.randint(1, 100) for i in range(20)]
 print('生成列表：', ls)
 ls[::2] = sorted(ls[::2], reverse=True)
 print('排序后：', ls)
-
