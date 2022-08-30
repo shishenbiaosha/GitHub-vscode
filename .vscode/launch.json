@@ -9,19 +9,20 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "externalTerminal",
+            "console": "integratedTerminal", //输出到内部终端 integratedTerminal 输出到外部终端 externalTerminal
             "justMyCode": true
         },
+        //此代码段为vs code配置C语言默认片段
         {
             "name": "gcc.exe - 生成和调试活动文件",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "D:\\mingw64\\bin\\gdb.exe",
             "setupCommands": [
@@ -31,7 +32,36 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: gcc.exe 生成活动文件"
+            "preLaunchTask": "C/C++: gcc.exe 生成/活动文件"
         },
+
+        // // 修改了 program 和 args 解决了终端黑框一闪而退的问题 弃用原因：无法调试
+        // {
+        //     "name": "gcc.exe - 生成和调试活动文件",
+        //     "type": "cppdbg",
+        //     "request": "launch",
+        //     "program": "C:\\Windows\\System32\\cmd.exe",
+        //     "args": [
+        //         "/c",
+        //         "${fileDirname}/${fileBasenameNoExtension}.exe",
+        //         "&",
+        //         "pause"
+        //     ],
+        //     "stopAtEntry": false,
+        //     "cwd": "${fileDirname}",
+        //     "environment": [],
+        //     "externalConsole": true,
+        //     "MIMode": "gdb",
+        //     "miDebuggerPath": "D:\\mingw64\\bin\\gdb.exe",
+        //     "setupCommands": [
+        //         {
+        //             "description": "为 gdb 启用整齐打印",
+        //             "text": "-enable-pretty-printing",
+        //             "ignoreFailures": true
+        //         }
+        //     ],
+        //     "preLaunchTask": "C/C++: gcc.exe 生成/活动文件"
+        // },
+
     ]
 }
