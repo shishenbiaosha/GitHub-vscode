@@ -6,6 +6,7 @@
             "command": "D:\\mingw64\\bin\\gcc.exe",
             "args": [
                 // "-fdiagnostics-color = always",
+                // "-fexec-charset=gbk",
                 "-g",
                 "${file}",
                 "-o",
