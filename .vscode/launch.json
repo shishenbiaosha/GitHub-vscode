@@ -14,7 +14,7 @@
         },
         //此代码段为vs code配置C语言默认片段
         {
-            "name": "gcc.exe - 生成和调试活动文件",
+            "name": "C/C++: gcc.exe 生成/活动文件",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",

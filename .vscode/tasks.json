@@ -3,7 +3,7 @@
         {
             "type": "cppbuild",
             "label": "C/C++: gcc.exe 生成/活动文件",
-            "command": "D:\\mingw64\\bin\\gcc.exe",
+            "command": "D:\\mingw64\\bin\\g++.exe", //2023/4/15 报错 "preLaunchTask“C/C++: gcc.exe 生成/活动文件”已终止，退出代码为 -1。" 将gcc.exe改为g++.exe
             "args": [
                 // "-fdiagnostics-color = always",
                 // "-fexec-charset=gbk",
